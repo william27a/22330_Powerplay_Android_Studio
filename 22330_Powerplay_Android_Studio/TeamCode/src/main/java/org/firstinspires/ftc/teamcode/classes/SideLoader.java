@@ -1,12 +1,13 @@
 package org.firstinspires.ftc.teamcode.classes;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 class SideLoader {
-    private DcMotor lift;
-    private Servo claw;
+    public DcMotor lift;
+    public Servo claw;
 
     private double liftSpeed = 0.6;
 
@@ -27,6 +28,12 @@ class SideLoader {
     public void init() {
         this.lift.setDirection(DcMotor.Direction.REVERSE);
         this.claw.setDirection(Servo.Direction.FORWARD);
+
+        this.claw.scaleRange(0.15, 0.25);
+    }
+
+    public void setLiftDirection(DcMotorSimple.Direction direction) {
+        this.lift.setDirection(direction);
     }
 
     public double getLiftSpeed() { return this.liftSpeed; }

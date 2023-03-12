@@ -2,12 +2,20 @@ package org.firstinspires.ftc.teamcode.classes;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class RobotController extends LinearOpMode {
-    private Chassis chassis;
+    public Chassis chassis;
     private LongGrabber longGrabber;
     private SideLoader sideLoader;
+
+    // TeleOp
+    private double x;
+    private double y;
+    private double pivot;
+    private double normal;
+    private boolean liftWasStatic;
 
     public RobotController(Chassis chassis, LongGrabber longGrabber, SideLoader sideLoader) {
         this.chassis = chassis;
@@ -19,6 +27,11 @@ public class RobotController extends LinearOpMode {
         this.chassis = new Chassis(map);
         this.longGrabber = new LongGrabber(map);
         this.sideLoader = new SideLoader(map);
+    }
+
+    public void readyTeleOp() {
+        this.chassis.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        this.sideLoader.setLiftDirection(DcMotorSimple.Direction.FORWARD);
     }
 
     // Set variables
@@ -145,7 +158,62 @@ public class RobotController extends LinearOpMode {
         this.sideLoader.deactivate();
     }
 
-    // LinearOpMode requirements
     @Override
     public void runOpMode() {}
+
+    public void handleMovement() {
+        if (gamepad1.b) {
+            this.setArmZ(0, false);
+            this.setShoulderDegrees(0, false);
+        }
+
+        // assign values to each variable included in chassis math
+        pivot = gamepad1.right_trigger - gamepad1.left_trigger;
+        x = gamepad1.left_stick_x;
+        y = -gamepad1.left_stick_y;
+        normal = Math.abs(pivot) + Math.abs(x) + Math.abs(y);
+        if (normal < 1) {
+            normal = 1;
+        }
+
+        // set motor powers
+        this.chassis.frontLeft.setPower((y+x+pivot)/normal);
+        this.chassis.frontRight.setPower((y-x-pivot)/normal);
+        this.chassis.backLeft.setPower((y-x+pivot)/normal);
+        this.chassis.backRight.setPower((y+x-pivot)/normal);
+
+        if (gamepad1.left_bumper) {
+            if (!gamepad1.right_bumper) {
+                this.sideLoader.claw.setPosition(1);
+            }
+        } else if (gamepad1.right_bumper) {
+            this.sideLoader.claw.setPosition(0);
+        }
+
+        if (-gamepad1.right_stick_y != 0) {
+            if (liftWasStatic) {
+                liftWasStatic = false;
+                this.sideLoader.lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            }
+            this.sideLoader.lift.setPower(-gamepad1.right_stick_y);
+        } else if (!liftWasStatic) {
+            this.sideLoader.lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            this.sideLoader.lift.setTargetPosition((int) 0);
+            this.sideLoader.lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            this.sideLoader.lift.setPower(0.3);
+            liftWasStatic = true;
+        }
+    }
+
+    public void downGear() {
+        if (this.chassis.getDriveSpeed() > 0) {
+            this.chassis.setDriveSpeed(this.chassis.getDriveSpeed()-0.1);
+        }
+    }
+
+    public void upGear() {
+        if (this.chassis.getDriveSpeed() < 1) {
+            this.chassis.setDriveSpeed(this.chassis.getDriveSpeed()+0.1);
+        }
+    }
 }

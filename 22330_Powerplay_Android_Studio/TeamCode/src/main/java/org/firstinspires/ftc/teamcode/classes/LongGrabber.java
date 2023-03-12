@@ -6,9 +6,9 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 
 public class LongGrabber {
-    private DcMotor shoulder;
-    private DcMotor arm;
-    private Servo hand;
+    public DcMotor shoulder;
+    public DcMotor arm;
+    public Servo hand;
 
     private TouchSensor limitSwitch;
 
@@ -47,6 +47,8 @@ public class LongGrabber {
         this.shoulder.setDirection(DcMotor.Direction.REVERSE);
         this.arm.setDirection(DcMotor.Direction.REVERSE);
         this.hand.setDirection(Servo.Direction.FORWARD);
+
+        this.hand.scaleRange(0.4, 0.55);
     }
 
     public double getShoulderSpeed() { return this.shoulderSpeed; }

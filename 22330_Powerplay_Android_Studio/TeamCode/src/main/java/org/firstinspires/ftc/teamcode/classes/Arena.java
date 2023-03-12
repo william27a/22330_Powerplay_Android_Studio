@@ -190,9 +190,9 @@ public class Arena extends LinearOpMode {
         double height = Global.coneHeightFromStack(cone) - Global.SHOULDER_OFF_THE_GROUND;
         double length = Global.LENGTH_TO_STACK;
         double hypotenuse = Global.getHypotenuse(height, length);
-        
-        this.setRotationDegrees(degrees+Global.DEGREES_TO_STACK, 1);
-        this.setRotationDegrees(degrees+Global.DEGREES_TO_STACK, 0.5);
+
+        this.setRotationDegrees(degrees + Global.DEGREES_TO_STACK, 1);
+        this.setRotationDegrees(degrees + Global.DEGREES_TO_STACK, 0.5);
 
         this.setShoulderDegrees(Math.toDegrees(Math.atan(height/length)), true);
         this.robot.setHandZ(hypotenuse, true);
@@ -210,9 +210,9 @@ public class Arena extends LinearOpMode {
         double length = Global.LENGTH_TO_JUNCTION;
         double height = Global.HEIGHT_TO_JUNCTION;
         double hypotenuse = Global.getHypotenuse(length, height);
-        
-        this.setRotationDegrees(degrees+Global.DEGREES_TO_JUNCTION, 1);
-        this.setRotationDegrees(degrees+Global.DEGREES_TO_JUNCTION, 0.5);
+
+        this.setRotationDegrees(degrees + Global.DEGREES_TO_JUNCTION, 1);
+        this.setRotationDegrees(degrees + Global.DEGREES_TO_JUNCTION, 0.5);
 
         this.setShoulderDegrees(Math.toDegrees(Math.atan(height/length)), false);
         this.robot.setHandZ(hypotenuse, true);
