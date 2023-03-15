@@ -16,11 +16,11 @@ public class LongGrabber {
     private double armSpeed = 0.6;
 
     public LongGrabber(HardwareMap map) {
-        this.shoulder = (DcMotor)map.get("shoulder");
-        this.arm = (DcMotor)map.get("arm");
-        this.hand = (Servo)map.get("hand");
+        this.shoulder = (DcMotor) map.get("shoulder");
+        this.arm = (DcMotor) map.get("arm");
+        this.hand = (Servo) map.get("hand");
 
-        this.limitSwitch = (TouchSensor)map.get("limitSwitch");
+        this.limitSwitch = (TouchSensor) map.get("limitSwitch");
 
         this.init();
     }
@@ -51,13 +51,21 @@ public class LongGrabber {
         this.hand.scaleRange(0.4, 0.55);
     }
 
-    public double getShoulderSpeed() { return this.shoulderSpeed; }
+    public double getShoulderSpeed() {
+        return this.shoulderSpeed;
+    }
 
-    public void setShoulderSpeed(double x) { this.shoulderSpeed = x; }
+    public void setShoulderSpeed(double x) {
+        this.shoulderSpeed = x;
+    }
 
-    public double getArmSpeed() { return this.armSpeed; }
+    public double getArmSpeed() {
+        return this.armSpeed;
+    }
 
-    public void setArmSpeed(double x) { this.armSpeed = x; }
+    public void setArmSpeed(double x) {
+        this.armSpeed = x;
+    }
 
     public double getShoulderDegrees() {
         return this.shoulder.getTargetPosition() / Global.SHOULDER_CPD;
@@ -73,13 +81,16 @@ public class LongGrabber {
         this.shoulder.setPower(this.shoulderSpeed);
 
         if (wait) {
-            while (!Global.isClose(this.shoulder, (Global.SHOULDER_TOLERANCE * Global.SHOULDER_CPD))) {}
+            while (!Global.isClose(this.shoulder, (Global.SHOULDER_TOLERANCE * Global.SHOULDER_CPD))) {
+            }
 
             this.shoulder.setPower(0);
         }
     }
 
-    public double getShoulderRadians() { return this.shoulder.getTargetPosition() / Global.SHOULDER_CPR; }
+    public double getShoulderRadians() {
+        return this.shoulder.getTargetPosition() / Global.SHOULDER_CPR;
+    }
 
     public void setShoulderRadians(double radians, boolean wait) {
         this.shoulder.setTargetPosition((int) (radians * Global.SHOULDER_CPR));
@@ -89,7 +100,8 @@ public class LongGrabber {
         this.shoulder.setPower(this.shoulderSpeed);
 
         if (wait) {
-            while (!Global.isClose(this.shoulder, (Global.SHOULDER_TOLERANCE * Global.SHOULDER_CPD))) {}
+            while (!Global.isClose(this.shoulder, (Global.SHOULDER_TOLERANCE * Global.SHOULDER_CPD))) {
+            }
 
             this.shoulder.setPower(0);
         }
@@ -99,7 +111,8 @@ public class LongGrabber {
         this.shoulder.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         this.shoulder.setPower(-speed);
-        while (!this.limitSwitch.isPressed()) {}
+        while (!this.limitSwitch.isPressed()) {
+        }
         this.shoulder.setPower(0);
 
         this.shoulder.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -109,8 +122,10 @@ public class LongGrabber {
         this.shoulder.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         this.shoulder.setPower(speed);
-        while (!this.limitSwitch.isPressed()) {}
-        while (this.limitSwitch.isPressed()) {}
+        while (!this.limitSwitch.isPressed()) {
+        }
+        while (this.limitSwitch.isPressed()) {
+        }
         this.shoulder.setPower(0);
 
         this.shoulder.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -121,7 +136,9 @@ public class LongGrabber {
         this.resetShoulderDown(speed);
     }
 
-    public double getArmZ() { return this.arm.getTargetPosition() / Global.ARM_CPI; }
+    public double getArmZ() {
+        return this.arm.getTargetPosition() / Global.ARM_CPI;
+    }
 
     public void setArmZ(double z, boolean wait) {
         if (z < 0) {
@@ -135,23 +152,36 @@ public class LongGrabber {
         this.arm.setPower(this.armSpeed);
 
         if (wait) {
-            while (this.arm.isBusy()) {}
+            while (this.arm.isBusy()) {
+            }
 
             this.arm.setPower(0);
         }
     }
 
-    public void armBrake() { this.arm.setPower(this.armSpeed); }
+    public void armBrake() {
+        this.arm.setPower(this.armSpeed);
+    }
 
-    public void stopArmBrake() { this.arm.setPower(0); }
+    public void stopArmBrake() {
+        this.arm.setPower(0);
+    }
 
-    public void openHand() { hand.setPosition(0.4); }
+    public void openHand() {
+        hand.setPosition(0.4);
+    }
 
-    public void openHandFully() { hand.setPosition(0.3); }
+    public void openHandFully() {
+        hand.setPosition(0.3);
+    }
 
-    public void closeHand() { hand.setPosition(0.55); }
+    public void closeHand() {
+        hand.setPosition(0.55);
+    }
 
-    public boolean isBusy() { return this.shoulder.isBusy() || this.arm.isBusy(); }
+    public boolean isBusy() {
+        return this.shoulder.isBusy() || this.arm.isBusy();
+    }
 
     public void deactivate() {
         this.shoulder.setPower(0);

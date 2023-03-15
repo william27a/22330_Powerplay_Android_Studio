@@ -1,37 +1,25 @@
 package org.firstinspires.ftc.teamcode.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
-import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.teamcode.classes.Arena;
 import org.firstinspires.ftc.teamcode.classes.Global;
 import org.firstinspires.ftc.teamcode.classes.RobotController;
 
-import com.qualcomm.robotcore.hardware.IMU;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.CRServo;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import java.util.List;
-import java.util.ArrayList;
 
 @Autonomous(name = "Parking Plus Cones", group = "Experimental")
 public class ParkingPlusCones extends LinearOpMode {
-    private RobotController robot;
-    private Arena arena;
-
-    private String label;
-    private ElapsedTime time;
-    private double recognition_max = 2;
 
     // update to new tfod model when available
-    private static final String TFOD_MODEL_FILE  = "model_20230112_080725.tflite";
+    private static final String TFOD_MODEL_FILE = "model_20230112_080725.tflite";
 
     // update labels when model is updated
     private static final String[] LABELS = {
@@ -48,36 +36,37 @@ public class ParkingPlusCones extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        arena = new Arena(hardwareMap, false);
-        robot = arena.getRobot();
+        Arena arena = new Arena(hardwareMap, false);
+        RobotController robot = arena.getRobot();
 
         initVuforia();
         initTfod();
         if (tfod != null) {
             tfod.activate();
-            tfod.setZoom(1.0, 16.0/9.0);
+            tfod.setZoom(1.0, 16.0 / 9.0);
         }
         telemetry.addLine(">Press Play to start op mode");
         telemetry.update();
 
         waitForStart();
 
-        time = new ElapsedTime();
+        ElapsedTime time = new ElapsedTime();
 
         List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+        double recognition_max = 2;
         while (opModeIsActive() && time.seconds() < recognition_max && (updatedRecognitions == null || updatedRecognitions.size() == 0)) {
             updatedRecognitions = tfod.getUpdatedRecognitions();
         }
 
         String label;
-        if (time.seconds() >= recognition_max || updatedRecognitions.size() == 0 || updatedRecognitions == null) {
+        if (time.seconds() >= recognition_max || updatedRecognitions.size() == 0) {
             label = LABELS[2]; // 3banana
         } else {
             label = updatedRecognitions.get(0).getLabel();
         }
-        
+
         robot.setDriveSpeed(0.7);
-        
+
         robot.closeClaw();
         sleep(1000);
         robot.setClawHeight(4, true);
@@ -87,23 +76,31 @@ public class ParkingPlusCones extends LinearOpMode {
         arena.setRotationDegrees(0, 0.6);
         arena.moveToSquare(4.05, 3.521, true);
         arena.setRotationDegrees(0, 0.6);
-        robot.setClawHeight(Global.HIGH_JUNCTION_HEIGHT+4, true);
+        robot.setClawHeight(Global.HIGH_JUNCTION_HEIGHT + 4, true);
         robot.liftBrake();
         arena.move(3.5, -3.5, -3.5, 3.5);
         arena.setRotationDegrees(0, 0.6);
         robot.openClaw();
         sleep(1000);
-        
+
         robot.setDriveSpeed(0.5);
-            
+
         arena.moveToSquare(4.2, 3, true);
-        
-        arena.moveToSquare(5, 3-(Global.SHOULDER_LEFT_FROM_CENTER/Global.TILE_LENGTH), true);
-        arena.moveToSquare(5.5, 3-(Global.SHOULDER_LEFT_FROM_CENTER/Global.TILE_LENGTH), true);
+
+        arena.moveToSquare(5, 3 - (Global.SHOULDER_LEFT_FROM_CENTER / Global.TILE_LENGTH), true);
+        arena.moveToSquare(5.5, 3 - (Global.SHOULDER_LEFT_FROM_CENTER / Global.TILE_LENGTH), true);
         for (int i = 5; i > 0; i--) {
             arena.grabConeOnStack(270, i);
 
             arena.placeConeOnJunction(45);
+        }
+
+        if (label.equals("1monkey")) {
+            arena.moveToSquare(4, 3, true);
+        } else if (label.equals("2omega")) {
+            arena.moveToSquare(5, 3, true);
+        } else {
+            arena.moveToSquare(6, 3, true);
         }
     }
 

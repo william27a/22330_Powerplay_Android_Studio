@@ -12,8 +12,8 @@ public class ResetServo extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        claw = (Servo)hardwareMap.get("claw");
-        
+        claw = (Servo) hardwareMap.get("claw");
+
         waitForStart();
         claw.setPosition(0);
         sleep(200000);

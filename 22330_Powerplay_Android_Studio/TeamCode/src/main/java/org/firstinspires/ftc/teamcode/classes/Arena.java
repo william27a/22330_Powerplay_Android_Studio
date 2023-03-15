@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.classes;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.TouchSensor;
-import com.qualcomm.robotcore.robot.Robot;
 
 public class Arena extends LinearOpMode {
     public RobotController robot;
@@ -15,9 +14,9 @@ public class Arena extends LinearOpMode {
     private double calibrateYawDegrees;
     private double calibrateYawRadians;
 
-    private double shoulderOffsetDegrees;
-    private double shoulderOffsetRadians;
-    
+    private final double shoulderOffsetDegrees;
+    private final double shoulderOffsetRadians;
+
     public Arena(RobotController robot, TouchSensor limitSwitch, double xPosition, double yPosition, double startingDegrees, double shoulderStartingDegrees, boolean realMatch) {
         this.robot = robot;
         this.limitSwitch = limitSwitch;
@@ -30,19 +29,19 @@ public class Arena extends LinearOpMode {
 
         this.shoulderOffsetDegrees = shoulderStartingDegrees;
         this.shoulderOffsetRadians = Math.toRadians(this.shoulderOffsetDegrees);
-        
+
         if (realMatch) {
-            this.xPosition += Math.sin(this.getRotationRadians())* Global.OFF_THE_BACK;
-            this.yPosition += Math.cos(this.getRotationRadians())*Global.OFF_THE_BACK;
-            
-            this.xPosition += Math.cos(this.getRotationRadians())*Global.ON_THE_LEFT;
-            this.yPosition += Math.sin(this.getRotationRadians())*Global.ON_THE_LEFT;
+            this.xPosition += Math.sin(this.getRotationRadians()) * Global.OFF_THE_BACK;
+            this.yPosition += Math.cos(this.getRotationRadians()) * Global.OFF_THE_BACK;
+
+            this.xPosition += Math.cos(this.getRotationRadians()) * Global.ON_THE_LEFT;
+            this.yPosition += Math.sin(this.getRotationRadians()) * Global.ON_THE_LEFT;
         }
     }
 
     public Arena(HardwareMap map, double xPosition, double yPosition, double startingDegrees, double shoulderStartingDegrees, boolean realMatch) {
         this.robot = new RobotController(map);
-        this.limitSwitch = (TouchSensor)map.get("limitSwitch");
+        this.limitSwitch = (TouchSensor) map.get("limitSwitch");
 
         this.xPosition = xPosition;
         this.yPosition = yPosition;
@@ -54,17 +53,17 @@ public class Arena extends LinearOpMode {
         this.shoulderOffsetRadians = Math.toRadians(this.shoulderOffsetDegrees);
 
         if (realMatch) {
-            this.xPosition += Math.sin(this.getRotationRadians())* Global.OFF_THE_BACK;
-            this.yPosition += Math.cos(this.getRotationRadians())*Global.OFF_THE_BACK;
+            this.xPosition += Math.sin(this.getRotationRadians()) * Global.OFF_THE_BACK;
+            this.yPosition += Math.cos(this.getRotationRadians()) * Global.OFF_THE_BACK;
 
-            this.xPosition += Math.cos(this.getRotationRadians())*Global.ON_THE_LEFT;
-            this.yPosition += Math.sin(this.getRotationRadians())*Global.ON_THE_LEFT;
+            this.xPosition += Math.cos(this.getRotationRadians()) * Global.ON_THE_LEFT;
+            this.yPosition += Math.sin(this.getRotationRadians()) * Global.ON_THE_LEFT;
         }
     }
 
     public Arena(HardwareMap map, boolean leftSide) {
         this.robot = new RobotController(map);
-        this.limitSwitch = (TouchSensor)map.get("limitSwitch");
+        this.limitSwitch = (TouchSensor) map.get("limitSwitch");
 
         if (leftSide) {
             this.xPosition = Arena.getInches(2, 0.5)[0] - Global.ON_THE_LEFT;
@@ -77,8 +76,6 @@ public class Arena extends LinearOpMode {
         this.shoulderOffsetDegrees = 52;
         this.shoulderOffsetRadians = Math.toRadians(this.shoulderOffsetDegrees);
     }
-
-    public RobotController getRobot() { return this.robot; }
 
     // Static and non-static get position methods
     public static double[] getInches(double squareX, double squareY) {
@@ -95,6 +92,10 @@ public class Arena extends LinearOpMode {
         return square;
     }
 
+    public RobotController getRobot() {
+        return this.robot;
+    }
+
     public double[] getSquare() {
         double[] square = new double[2];
         square[0] = (xPosition / Global.TILE_LENGTH) + 0.5;
@@ -107,11 +108,11 @@ public class Arena extends LinearOpMode {
         double forward = (inchesFL + inchesFR) / 2;
         double right = inchesFL - forward;
 
-        this.xPosition += Math.sin(this.getRotationRadians())*forward;
-        this.yPosition += Math.cos(this.getRotationRadians())*forward;
+        this.xPosition += Math.sin(this.getRotationRadians()) * forward;
+        this.yPosition += Math.cos(this.getRotationRadians()) * forward;
 
-        this.xPosition += Math.cos(this.getRotationRadians())*right;
-        this.yPosition += Math.sin(this.getRotationRadians())*right;
+        this.xPosition += Math.cos(this.getRotationRadians()) * right;
+        this.yPosition += Math.sin(this.getRotationRadians()) * right;
     }
 
     public void recalibrateYaw(double degrees) {
@@ -120,14 +121,18 @@ public class Arena extends LinearOpMode {
     }
 
     // Drive systems
-    public double getRotationDegrees() { return this.robot.getRotationDegrees() + this.calibrateYawDegrees; }
-    
+    public double getRotationDegrees() {
+        return this.robot.getRotationDegrees() + this.calibrateYawDegrees;
+    }
+
     public void setRotationDegrees(double degrees, double speed) {
         this.robot.setRotationDegrees(degrees - this.calibrateYawDegrees, speed);
     }
-    
-    public double getRotationRadians() { return this.robot.getRotationRadians() + this.calibrateYawRadians; }
-    
+
+    public double getRotationRadians() {
+        return this.robot.getRotationRadians() + this.calibrateYawRadians;
+    }
+
     public void setRotationRadians(double radians, double speed) {
         this.robot.setRotationRadians(radians - this.calibrateYawRadians, speed);
     }
@@ -155,7 +160,7 @@ public class Arena extends LinearOpMode {
             double a = Math.sin(this.getRotationRadians()) * cleanRight;
             double b = Math.cos(this.getRotationRadians()) * cleanRight;
 
-            this.move(- a + b, - a - b,  - a - b, - a + b);
+            this.move(-a + b, -a - b, -a - b, -a + b);
 
             a = Math.cos(this.getRotationRadians()) * moveUp;
             b = Math.sin(this.getRotationRadians()) * moveUp;
@@ -165,18 +170,22 @@ public class Arena extends LinearOpMode {
             a = Math.sin(this.getRotationRadians()) * moveRight;
             b = Math.cos(this.getRotationRadians()) * moveRight;
 
-            this.move(- a + b, - a - b,  - a - b, - a + b);
+            this.move(-a + b, -a - b, -a - b, -a + b);
         }
     }
 
     // Shoulder systems
-    public double getShoulderDegrees() { return this.robot.getShoulderDegrees() + this.shoulderOffsetDegrees; }
+    public double getShoulderDegrees() {
+        return this.robot.getShoulderDegrees() + this.shoulderOffsetDegrees;
+    }
 
     public void setShoulderDegrees(double degrees, boolean wait) {
         this.robot.setShoulderDegrees(degrees - this.shoulderOffsetDegrees, wait);
     }
-    
-    public double getShoulderRadians() { return this.robot.getShoulderRadians() + this.shoulderOffsetRadians; }
+
+    public double getShoulderRadians() {
+        return this.robot.getShoulderRadians() + this.shoulderOffsetRadians;
+    }
 
     public void setShoulderRadians(double radians, boolean wait) {
         this.robot.setShoulderRadians(radians - this.shoulderOffsetRadians, wait);
@@ -194,18 +203,18 @@ public class Arena extends LinearOpMode {
         this.setRotationDegrees(degrees + Global.DEGREES_TO_STACK, 1);
         this.setRotationDegrees(degrees + Global.DEGREES_TO_STACK, 0.5);
 
-        this.setShoulderDegrees(Math.toDegrees(Math.atan(height/length)), true);
+        this.setShoulderDegrees(Math.toDegrees(Math.atan(height / length)), true);
         this.robot.setHandZ(hypotenuse, true);
         this.robot.closeHand();
         sleep(1000);
-        
+
         this.robot.resetShoulderUpDown(1);
-        this.robot.setHandZ(hypotenuse-10, false);
+        this.robot.setHandZ(hypotenuse - 10, false);
 
         this.robot.waitForCompletion();
         this.robot.deactivate();
     }
-    
+
     public void placeConeOnJunction(double degrees) {
         double length = Global.LENGTH_TO_JUNCTION;
         double height = Global.HEIGHT_TO_JUNCTION;
@@ -214,7 +223,7 @@ public class Arena extends LinearOpMode {
         this.setRotationDegrees(degrees + Global.DEGREES_TO_JUNCTION, 1);
         this.setRotationDegrees(degrees + Global.DEGREES_TO_JUNCTION, 0.5);
 
-        this.setShoulderDegrees(Math.toDegrees(Math.atan(height/length)), false);
+        this.setShoulderDegrees(Math.toDegrees(Math.atan(height / length)), false);
         this.robot.setHandZ(hypotenuse, true);
         this.robot.armBrake();
         this.robot.openHand();
@@ -222,5 +231,6 @@ public class Arena extends LinearOpMode {
     }
 
     @Override
-    public void runOpMode() {}
+    public void runOpMode() {
+    }
 }
