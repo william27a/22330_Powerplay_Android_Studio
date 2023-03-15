@@ -7,12 +7,11 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 @Autonomous(name = "Reset Servo", group = "Inits")
 public class ResetServo extends LinearOpMode {
-    // Claw systems
-    private Servo claw;
 
     @Override
     public void runOpMode() {
-        claw = (Servo) hardwareMap.get("claw");
+        // Claw systems
+        Servo claw = (Servo) hardwareMap.get("claw");
 
         waitForStart();
         claw.setPosition(0);

@@ -81,8 +81,7 @@ public class LongGrabber {
         this.shoulder.setPower(this.shoulderSpeed);
 
         if (wait) {
-            while (!Global.isClose(this.shoulder, (Global.SHOULDER_TOLERANCE * Global.SHOULDER_CPD))) {
-            }
+            while (!Global.isClose(this.shoulder, (Global.SHOULDER_TOLERANCE * Global.SHOULDER_CPD))) {}
 
             this.shoulder.setPower(0);
         }

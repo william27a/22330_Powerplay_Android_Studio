@@ -93,8 +93,7 @@ public class Chassis {
         this.backLeft.setPower(this.driveSpeed);
         this.backRight.setPower(this.driveSpeed);
 
-        while (this.frontLeft.isBusy() || this.frontRight.isBusy() || this.backLeft.isBusy() || this.backRight.isBusy()) {
-        }
+        while (this.frontLeft.isBusy() || this.frontRight.isBusy() || this.backLeft.isBusy() || this.backRight.isBusy()) {}
 
         this.frontLeft.setPower(0);
         this.frontRight.setPower(0);

@@ -104,9 +104,10 @@ public class Arena extends LinearOpMode {
     }
 
     // Re-inits*
-    private void updatePosition(double inchesFL, double inchesFR, double inchesBL, double inchesBR) {
-        double forward = (inchesFL + inchesFR) / 2;
-        double right = inchesFL - forward;
+    private void update(double inchesFL, double inchesFR, double inchesBL, double inchesBR) {
+        double forward = (inchesFL + inchesFR)/2;
+        double right = (inchesFR - inchesBR)/2;
+        // double rotation = inchesFL - forward + right;
 
         this.xPosition += Math.sin(this.getRotationRadians()) * forward;
         this.yPosition += Math.cos(this.getRotationRadians()) * forward;
@@ -138,7 +139,7 @@ public class Arena extends LinearOpMode {
     }
 
     public void move(double inchesFL, double inchesFR, double inchesBL, double inchesBR) {
-        this.updatePosition(inchesFL, inchesFR, inchesBL, inchesBR);
+        this.update(inchesFL, inchesFR, inchesBL, inchesBR);
 
         this.robot.move(inchesFL, inchesFR, inchesBL, inchesBR);
     }

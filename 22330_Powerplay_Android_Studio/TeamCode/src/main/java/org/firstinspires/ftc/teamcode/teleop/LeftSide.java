@@ -2,10 +2,9 @@ package org.firstinspires.ftc.teamcode.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
 import org.firstinspires.ftc.teamcode.classes.Arena;
 import org.firstinspires.ftc.teamcode.classes.RobotController;
-
-import java.security.cert.TrustAnchor;
 
 @TeleOp(name = "Left Side", group = "Experimental")
 public class LeftSide extends LinearOpMode {

@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.classes;
 
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 
-
 public class RecognitionExtractData {
     public double center_x;
     public double center_y;

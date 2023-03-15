@@ -1,8 +1,8 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.classes.Arena;
 import org.firstinspires.ftc.teamcode.classes.RobotController;
@@ -15,7 +15,7 @@ public class RightSide extends LinearOpMode {
 
     private boolean upGearPressed = false;
     private boolean downGearPressed = false;
-    
+
     @Override
     public void runOpMode() {
         arena = new Arena(hardwareMap, false);

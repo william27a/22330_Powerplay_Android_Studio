@@ -1,58 +1,49 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
-import com.qualcomm.robotcore.hardware.IMU;
-import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.TouchSensor;
+
 import org.firstinspires.ftc.teamcode.classes.Arena;
-import org.firstinspires.ftc.teamcode.classes.Global;
 import org.firstinspires.ftc.teamcode.classes.RobotController;
 
 @TeleOp(name = "Decked Out", group = "Experimental")
 public class DeckedOut extends LinearOpMode {
+    // Gyroscope systems
+    private static final RevHubOrientationOnRobot.LogoFacingDirection[] logoFacingDirections
+            = RevHubOrientationOnRobot.LogoFacingDirection.values();
+    private static final RevHubOrientationOnRobot.UsbFacingDirection[] usbFacingDirections
+            = RevHubOrientationOnRobot.UsbFacingDirection.values();
     // Drive systems
     private DcMotor frontLeft;
     private DcMotor frontRight;
     private DcMotor backLeft;
     private DcMotor backRight;
-
     private double frontLeftPower;
     private double frontRightPower;
     private double backLeftPower;
     private double backRightPower;
-
     private double x;
     private double y;
     private double pivot;
     private double normal;
     private double percent = 0.9;
-
     // Shoulder systems
     private TouchSensor limitSwitch;
     private DcMotor shoulder;
-
     // Arm systems
     private DcMotor arm;
-
     // Hand systems
     private Servo hand;
-
     // Lift systems
     private DcMotor lift;
     private boolean liftWasStatic = false;
-
     // Claw systems
     private Servo claw;
-
-    // Gyroscope systems
-    private static RevHubOrientationOnRobot.LogoFacingDirection[] logoFacingDirections
-            = RevHubOrientationOnRobot.LogoFacingDirection.values();
-    private static RevHubOrientationOnRobot.UsbFacingDirection[] usbFacingDirections
-            = RevHubOrientationOnRobot.UsbFacingDirection.values();
-
     private IMU imu;
     private IMU.Parameters parameters;
 
@@ -61,9 +52,9 @@ public class DeckedOut extends LinearOpMode {
     private Arena arena;
 
     // Macros
-    private int leftStackCones = 5;
-    private int rightStackCones = 5;
-    private int junction = 3;
+    private final int leftStackCones = 5;
+    private final int rightStackCones = 5;
+    private final int junction = 3;
 
     private void handleMovement(double x, double y, double pivot) {
         double up = (Math.cos(arena.getRotationRadians()) * y) - (Math.sin(arena.getRotationRadians()) * x);
@@ -78,10 +69,10 @@ public class DeckedOut extends LinearOpMode {
         }
         normal /= percent;
 
-        frontLeft.setPower((y+x+pivot)/normal);
-        frontRight.setPower((y-x-pivot)/normal);
-        backLeft.setPower((y-x+pivot)/normal);
-        backRight.setPower((y+x-pivot)/normal);
+        frontLeft.setPower((y + x + pivot) / normal);
+        frontRight.setPower((y - x - pivot) / normal);
+        backLeft.setPower((y - x + pivot) / normal);
+        backRight.setPower((y + x - pivot) / normal);
     }
 
     /*private void extendToStack(int addCones) {
@@ -139,18 +130,18 @@ public class DeckedOut extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        frontLeft = (DcMotor)hardwareMap.get("frontLeft");
-        frontRight = (DcMotor)hardwareMap.get("frontRight");
-        backLeft = (DcMotor)hardwareMap.get("backLeft");
-        backRight = (DcMotor)hardwareMap.get("backRight");
+        frontLeft = (DcMotor) hardwareMap.get("frontLeft");
+        frontRight = (DcMotor) hardwareMap.get("frontRight");
+        backLeft = (DcMotor) hardwareMap.get("backLeft");
+        backRight = (DcMotor) hardwareMap.get("backRight");
 
-        limitSwitch = (TouchSensor)hardwareMap.get("limitSwitch");
-        shoulder = (DcMotor)hardwareMap.get("shoulder");
-        arm = (DcMotor)hardwareMap.get("arm");
-        hand = (Servo)hardwareMap.get("hand");
+        limitSwitch = (TouchSensor) hardwareMap.get("limitSwitch");
+        shoulder = (DcMotor) hardwareMap.get("shoulder");
+        arm = (DcMotor) hardwareMap.get("arm");
+        hand = (Servo) hardwareMap.get("hand");
 
-        lift = (DcMotor)hardwareMap.get("lift");
-        claw = (Servo)hardwareMap.get("claw");
+        lift = (DcMotor) hardwareMap.get("lift");
+        claw = (Servo) hardwareMap.get("claw");
 
         frontLeft.setDirection(DcMotor.Direction.FORWARD);
         frontRight.setDirection(DcMotor.Direction.REVERSE);
@@ -250,12 +241,12 @@ public class DeckedOut extends LinearOpMode {
                 lift.setPower(-gamepad1.right_stick_y);
             } else if (!liftWasStatic) {
                 lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                lift.setTargetPosition((int) 0);
+                lift.setTargetPosition(0);
                 lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 lift.setPower(0.3);
                 liftWasStatic = true;
             }
-                    
+
             if (gamepad1.left_bumper) {
                 if (!gamepad1.right_bumper) {
                     claw.setPosition(0);
@@ -263,7 +254,7 @@ public class DeckedOut extends LinearOpMode {
             } else if (gamepad1.right_bumper) {
                 claw.setPosition(1);
             }
-            
+
             if (gamepad1.y) {
                 percent = 1;
             }

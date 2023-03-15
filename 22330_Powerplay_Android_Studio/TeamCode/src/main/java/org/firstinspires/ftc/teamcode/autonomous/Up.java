@@ -7,18 +7,15 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 
 @Autonomous(name = "Up", group = "Inits")
 public class Up extends LinearOpMode {
-    private TouchSensor limitSwitch;
-    private DcMotor shoulder;
 
     @Override
     public void runOpMode() {
-        shoulder = (DcMotor) hardwareMap.get("shoulder");
-        limitSwitch = (TouchSensor) hardwareMap.get("limitSwitch");
+        DcMotor shoulder = (DcMotor) hardwareMap.get("shoulder");
+        TouchSensor limitSwitch = (TouchSensor) hardwareMap.get("limitSwitch");
 
         waitForStart();
         shoulder.setPower(-0.4);
-        while (!limitSwitch.isPressed()) {
-        }
+        while (!limitSwitch.isPressed()) {}
         shoulder.setPower(0);
     }
 }

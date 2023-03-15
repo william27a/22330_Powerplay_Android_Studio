@@ -26,18 +26,13 @@ public class Preload extends LinearOpMode {
     };
     private static final String VUFORIA_KEY =
             "ATZ/F4X/////AAABmSjnLIM91kSRo8TfH6CpvkpQb02HUOXzsAmc9sWr5aQKwBP0+GpVCddkSd7qVIgzYGRsutM1OEr4dRHyoy7G3gE8kovM+mnw5nVVkEJQEOhXlUt8ZN23VxVEMHO9qDIcH4vEv6w105kXo9FLJlikfRmKzVjMF/YAS4bU9UQVYpVzXCrEaoSE67McYRahSc3JfFmVkMqUCS2DDqyBC3MkN/YsO+EPmjz4iDIGz9HkSHkxylCOQ3rSHZQwZoGyrPJfkpl4XJoH+dKIawL3KeEWbMOIwDFR/IECVa8SNEeeaThDF3pvha2lTtdtgh5XLIcdSi27UQVTnaaM+5/G2gHLPMQ4n3DHIg4CQvmChLZTwD65";
-    private RobotController robot;
-    private Arena arena;
-    private String label;
-    private ElapsedTime time;
-    private final double recognition_max = 2;
     private VuforiaLocalizer vuforia;
     private TFObjectDetector tfod;
 
     @Override
     public void runOpMode() {
-        arena = new Arena(hardwareMap, false);
-        robot = arena.getRobot();
+        Arena arena = new Arena(hardwareMap, false);
+        RobotController robot = arena.getRobot();
 
         initVuforia();
         initTfod();
@@ -53,15 +48,16 @@ public class Preload extends LinearOpMode {
         robot.setShoulderDegrees(0, false);
         robot.openHand();
 
-        time = new ElapsedTime();
+        ElapsedTime time = new ElapsedTime();
 
         List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+        double recognition_max = 2;
         while (opModeIsActive() && time.seconds() < recognition_max && (updatedRecognitions == null || updatedRecognitions.size() == 0)) {
             updatedRecognitions = tfod.getUpdatedRecognitions();
         }
 
         String label;
-        if (time.seconds() >= recognition_max || updatedRecognitions.size() == 0 || updatedRecognitions == null) {
+        if (time.seconds() >= recognition_max || updatedRecognitions.size() == 0) {
             label = LABELS[2]; // 3banana
         } else {
             label = updatedRecognitions.get(0).getLabel();
