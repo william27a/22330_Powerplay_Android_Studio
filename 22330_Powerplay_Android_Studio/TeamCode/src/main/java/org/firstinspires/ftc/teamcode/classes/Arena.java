@@ -164,7 +164,7 @@ public class Arena extends LinearOpMode {
             this.move(-a + b, -a - b, -a - b, -a + b);
 
             a = Math.cos(this.getRotationRadians()) * moveUp;
-            b = Math.sin(this.getRotationRadians()) * moveUp;
+    https://www.tensorflow.org/lite/guide/inference        b = Math.sin(this.getRotationRadians()) * moveUp;
 
             this.move(a + b, a - b, a - b, a + b);
 
@@ -197,7 +197,7 @@ public class Arena extends LinearOpMode {
         this.robot.stopArmBrake();
         this.robot.openHand();
 
-        double height = Global.coneHeightFromStack(cone) - Global.SHOULDER_OFF_THE_GROUND;
+        double height = Global.coneHeightFromStack(cone) - Global.SHOULDER_ABOVE_GROUND;
         double length = Global.LENGTH_TO_STACK;
         double hypotenuse = Global.getHypotenuse(height, length);
 

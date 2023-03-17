@@ -87,8 +87,8 @@ public class ParkingPlusCones extends LinearOpMode {
 
         arena.moveToSquare(4.2, 3, true);
 
-        arena.moveToSquare(5, 3 - (Global.SHOULDER_LEFT_FROM_CENTER / Global.TILE_LENGTH), true);
-        arena.moveToSquare(5.5, 3 - (Global.SHOULDER_LEFT_FROM_CENTER / Global.TILE_LENGTH), true);
+        arena.moveToSquare(5, 3 - (Global.SHOULDER_RIGHT_FROM_CENTER / Global.TILE_LENGTH), true);
+        arena.moveToSquare(5.5, 3 - (Global.SHOULDER_RIGHT_FROM_CENTER / Global.TILE_LENGTH), true);
         for (int i = 5; i > 0; i--) {
             arena.grabConeOnStack(270, i);
 

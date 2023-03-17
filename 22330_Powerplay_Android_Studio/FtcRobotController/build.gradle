@@ -21,6 +21,15 @@ android {
         targetCompatibility JavaVersion.VERSION_1_7
     }
     namespace = 'com.qualcomm.ftcrobotcontroller'
+
+    // Specify tflite file should not be compressed for the app apk
+    aaptOptions {
+        noCompress "tflite"
+    }
+}
+
+dependencies {
+    implementation 'org.tensorflow:tensorflow-lite-gpu:2.11.0'
 }
 
 apply from: '../build.dependencies.gradle'

@@ -25,6 +25,8 @@ public class TestOp extends LinearOpMode {
             // positive when stick points down?!?!?!
 
             shoulder.setPower(gamepad1.right_stick_y / 2);
+            telemetry.addData("Shoulder power", gamepad1.right_stick_y/2);
+            telemetry.update();
 
             if (-gamepad1.right_stick_y != 0) {
                 if (armWasStatic) {
