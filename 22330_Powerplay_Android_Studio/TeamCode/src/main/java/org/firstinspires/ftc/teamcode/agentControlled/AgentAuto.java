@@ -9,7 +9,7 @@ import java.io.File;
 
 @Autonomous(name = "AgentAuto", group = "Agent")
 public class AgentAuto extends LinearOpMode {
-    private File agentFile = new File("org/firstinspires/ftc/teamcode/blank.tflite");
+    private File agentFile = new File("org/firstinspires/ftc/teamcode/testModel.onnx");
     Interpreter interpreter = new Interpreter(agentFile);
 
 
