@@ -19,7 +19,6 @@ public class TestOp extends LinearOpMode {
     @Override
     public void runOpMode() {
         robot = new RobotController(hardwareMap, RuntimeType.DRIVER_CONTROLLED_TELEOP);
-        robot.prepareRL();
 
         //shoulder = (DcMotor) hardwareMap.get("shoulder");
         //arm = (DcMotor) hardwareMap.get("arm");
@@ -27,13 +26,13 @@ public class TestOp extends LinearOpMode {
         //arm.setDirection(DcMotor.Direction.REVERSE);
 
         waitForStart();
-        while (opModeIsActive()) {
-            // Wat duh hek
-            // Y values are negative when stick points up
-            // positive when stick points down?!?!?!
-
-            robot.handleMovementBackwards(gamepad1);
-
+        //while (opModeIsActive()) {
+            robot.setMotorPowers(1, 1, 1, 1);
+            sleep(1000);
+            robot.setMotorPowers(1,-1,-1,1);
+            sleep(1000);
+            robot.setMotorPowers(1,-1,1,-1);
+            sleep(1000);
             /*
 
             shoulder.setPower(gamepad1.right_stick_y / 2);
@@ -55,6 +54,6 @@ public class TestOp extends LinearOpMode {
             }
 
             */
-        }
+        //}
     }
 }

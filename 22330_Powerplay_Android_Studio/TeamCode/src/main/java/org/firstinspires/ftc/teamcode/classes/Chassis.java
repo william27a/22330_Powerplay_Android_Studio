@@ -57,11 +57,6 @@ public class Chassis {
     }
 
     public void prepareRL() {
-        this.frontLeft.setDirection(DcMotor.Direction.REVERSE);
-        this.frontRight.setDirection(DcMotor.Direction.FORWARD);
-        this.backLeft.setDirection(DcMotor.Direction.REVERSE);
-        this.backRight.setDirection(DcMotor.Direction.FORWARD);
-
         RevHubOrientationOnRobot.LogoFacingDirection logo = logoFacingDirections[0]; // Up
         RevHubOrientationOnRobot.UsbFacingDirection usb = usbFacingDirections[5]; // Right
         RevHubOrientationOnRobot orientationOnRobot = new RevHubOrientationOnRobot(logo, usb);

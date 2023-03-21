@@ -38,12 +38,10 @@ public class RobotController extends LinearOpMode {
 
     public void readyTeleOp() {
         this.chassis.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        this.sideLoader.setLiftDirection(DcMotorSimple.Direction.FORWARD);
     }
 
     public void prepareRL() {
         this.chassis.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        this.sideLoader.setLiftDirection(DcMotorSimple.Direction.FORWARD);
 
         this.chassis.prepareRL();
     }
@@ -320,5 +318,12 @@ public class RobotController extends LinearOpMode {
         if (this.chassis.getDriveSpeed() < 1) {
             this.chassis.setDriveSpeed(this.chassis.getDriveSpeed() + 0.1);
         }
+    }
+
+    public void setMotorPowers(double fl, double fr, double bl, double br) {
+        this.chassis.frontLeft.setPower(fl);
+        this.chassis.frontRight.setPower(fr);
+        this.chassis.backLeft.setPower(bl);
+        this.chassis.backRight.setPower(br);
     }
 }
