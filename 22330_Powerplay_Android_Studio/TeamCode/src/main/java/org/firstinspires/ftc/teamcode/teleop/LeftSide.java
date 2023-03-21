@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.classes.Arena;
 import org.firstinspires.ftc.teamcode.classes.RobotController;
+import org.firstinspires.ftc.teamcode.classes.RuntimeType;
 
 @TeleOp(name = "Left Side", group = "Experimental")
 public class LeftSide extends LinearOpMode {
@@ -17,14 +18,14 @@ public class LeftSide extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        arena = new Arena(hardwareMap, false);
+        arena = new Arena(hardwareMap, RuntimeType.DRIVER_CONTROLLED_TELEOP, false);
         robot = arena.getRobot();
 
         robot.readyTeleOp();
 
         waitForStart();
         while (opModeIsActive()) {
-            robot.handleMovement();
+            robot.handleMovement(gamepad1);
 
             if (gamepad1.y) {
                 if (!upGearPressed && !gamepad1.b) {

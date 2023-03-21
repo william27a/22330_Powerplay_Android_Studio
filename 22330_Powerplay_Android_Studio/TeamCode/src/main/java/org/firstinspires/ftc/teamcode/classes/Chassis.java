@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.classes;
 
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 
@@ -48,6 +49,18 @@ public class Chassis {
         this.frontRight.setDirection(DcMotor.Direction.REVERSE);
         this.backLeft.setDirection(DcMotor.Direction.FORWARD);
         this.backRight.setDirection(DcMotor.Direction.REVERSE);
+
+        RevHubOrientationOnRobot.LogoFacingDirection logo = logoFacingDirections[0]; // Up
+        RevHubOrientationOnRobot.UsbFacingDirection usb = usbFacingDirections[5]; // Right
+        RevHubOrientationOnRobot orientationOnRobot = new RevHubOrientationOnRobot(logo, usb);
+        this.imu.initialize(new IMU.Parameters(orientationOnRobot));
+    }
+
+    public void prepareRL() {
+        this.frontLeft.setDirection(DcMotor.Direction.REVERSE);
+        this.frontRight.setDirection(DcMotor.Direction.FORWARD);
+        this.backLeft.setDirection(DcMotor.Direction.REVERSE);
+        this.backRight.setDirection(DcMotor.Direction.FORWARD);
 
         RevHubOrientationOnRobot.LogoFacingDirection logo = logoFacingDirections[0]; // Up
         RevHubOrientationOnRobot.UsbFacingDirection usb = usbFacingDirections[5]; // Right

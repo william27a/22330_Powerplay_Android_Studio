@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 import org.firstinspires.ftc.teamcode.classes.Arena;
 import org.firstinspires.ftc.teamcode.classes.RobotController;
+import org.firstinspires.ftc.teamcode.classes.RuntimeType;
 
 @TeleOp(name = "Right Side", group = "Experimental")
 public class RightSide extends LinearOpMode {
@@ -18,19 +19,14 @@ public class RightSide extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        arena = new Arena(hardwareMap, false);
+        arena = new Arena(hardwareMap, RuntimeType.DRIVER_CONTROLLED_TELEOP, false);
         robot = arena.getRobot();
 
         robot.readyTeleOp();
 
-        robot.chassis.frontLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        robot.chassis.frontRight.setDirection(DcMotorSimple.Direction.FORWARD);
-        robot.chassis.backLeft.setDirection(DcMotorSimple.Direction.REVERSE);
-        robot.chassis.backRight.setDirection(DcMotorSimple.Direction.FORWARD);
-
         waitForStart();
         while (opModeIsActive()) {
-            robot.handleMovement();
+            robot.handleMovementBackwards(gamepad1);
 
             if (gamepad1.y) {
                 if (!upGearPressed && !gamepad1.b) {

@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.classes;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 public class RobotController extends LinearOpMode {
@@ -17,21 +18,34 @@ public class RobotController extends LinearOpMode {
     private double normal;
     private boolean liftWasStatic;
 
-    public RobotController(Chassis chassis, LongGrabber longGrabber, SideLoader sideLoader) {
+    public RobotController(Chassis chassis, LongGrabber longGrabber, SideLoader sideLoader, RuntimeType type) {
         this.chassis = chassis;
         this.longGrabber = longGrabber;
         this.sideLoader = sideLoader;
     }
 
-    public RobotController(HardwareMap map) {
+    public RobotController(HardwareMap map, RuntimeType type) {
         this.chassis = new Chassis(map);
         this.longGrabber = new LongGrabber(map);
         this.sideLoader = new SideLoader(map);
+
+        if (type == RuntimeType.DRIVER_CONTROLLED_TELEOP) {
+            this.readyTeleOp();
+        } else if (type == RuntimeType.AGENT_CONTROLLED_TELEOP || type == RuntimeType.AGENT_CONTROLLED_AUTO) {
+            this.prepareRL();
+        }
     }
 
     public void readyTeleOp() {
         this.chassis.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         this.sideLoader.setLiftDirection(DcMotorSimple.Direction.FORWARD);
+    }
+
+    public void prepareRL() {
+        this.chassis.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        this.sideLoader.setLiftDirection(DcMotorSimple.Direction.FORWARD);
+
+        this.chassis.prepareRL();
     }
 
     // Set variables
@@ -208,7 +222,7 @@ public class RobotController extends LinearOpMode {
     public void runOpMode() {
     }
 
-    public void handleMovement() {
+    public void handleMovement(Gamepad gamepad1) {
         if (gamepad1.b) {
             this.setArmZ(0, false);
             this.setShoulderDegrees(0, false);
@@ -218,6 +232,50 @@ public class RobotController extends LinearOpMode {
         pivot = gamepad1.right_trigger - gamepad1.left_trigger;
         x = gamepad1.left_stick_x;
         y = -gamepad1.left_stick_y;
+        normal = Math.abs(pivot) + Math.abs(x) + Math.abs(y);
+        if (normal < 1) {
+            normal = 1;
+        }
+
+        // set motor powers
+        this.chassis.frontLeft.setPower((y + x + pivot) / normal);
+        this.chassis.frontRight.setPower((y - x - pivot) / normal);
+        this.chassis.backLeft.setPower((y - x + pivot) / normal);
+        this.chassis.backRight.setPower((y + x - pivot) / normal);
+
+        if (gamepad1.left_bumper) {
+            if (!gamepad1.right_bumper) {
+                this.sideLoader.claw.setPosition(1);
+            }
+        } else if (gamepad1.right_bumper) {
+            this.sideLoader.claw.setPosition(0);
+        }
+
+        if (-gamepad1.right_stick_y != 0) {
+            if (liftWasStatic) {
+                liftWasStatic = false;
+                this.sideLoader.lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            }
+            this.sideLoader.lift.setPower(-gamepad1.right_stick_y);
+        } else if (!liftWasStatic) {
+            this.sideLoader.lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            this.sideLoader.lift.setTargetPosition(0);
+            this.sideLoader.lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            this.sideLoader.lift.setPower(0.3);
+            liftWasStatic = true;
+        }
+    }
+
+    public void handleMovementBackwards(Gamepad gamepad1) {
+        if (gamepad1.b) {
+            this.setArmZ(0, false);
+            this.setShoulderDegrees(0, false);
+        }
+
+        // assign values to each variable included in chassis math
+        pivot = gamepad1.right_trigger - gamepad1.left_trigger;
+        x = -gamepad1.left_stick_x;
+        y = gamepad1.left_stick_y;
         normal = Math.abs(pivot) + Math.abs(x) + Math.abs(y);
         if (normal < 1) {
             normal = 1;

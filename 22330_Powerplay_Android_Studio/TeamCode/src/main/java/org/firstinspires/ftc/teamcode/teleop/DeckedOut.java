@@ -10,6 +10,7 @@ import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.teamcode.classes.Arena;
 import org.firstinspires.ftc.teamcode.classes.RobotController;
+import org.firstinspires.ftc.teamcode.classes.RuntimeType;
 
 @TeleOp(name = "Decked Out", group = "Experimental")
 public class DeckedOut extends LinearOpMode {
@@ -164,7 +165,7 @@ public class DeckedOut extends LinearOpMode {
         RevHubOrientationOnRobot orientationOnRobot = new RevHubOrientationOnRobot(logo, usb);
         imu.initialize(new IMU.Parameters(orientationOnRobot));
 
-        arena = new Arena(hardwareMap, false);
+        arena = new Arena(hardwareMap, RuntimeType.DRIVER_CONTROLLED_TELEOP, false);
         robot = arena.getRobot();
 
         robot.setWheelMode(DcMotor.RunMode.RUN_USING_ENCODER);

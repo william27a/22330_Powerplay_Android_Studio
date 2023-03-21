@@ -2,31 +2,52 @@ package org.firstinspires.ftc.teamcode.agentControlled;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.util.ElapsedTime;
+import com.vuforia.Image;
 
-import org.tensorflow.lite.Interpreter;
+import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.teamcode.classes.RobotController;
+import org.firstinspires.ftc.teamcode.classes.RuntimeType;
 
 import java.io.File;
+import java.nio.ByteBuffer;
 
 @Autonomous(name = "AgentAuto", group = "Agent")
 public class AgentAuto extends LinearOpMode {
-    private File agentFile = new File("org/firstinspires/ftc/teamcode/testModel.onnx");
-    Interpreter interpreter = new Interpreter(agentFile);
+    private File file;
+    private AgentHandler agentHandler;
 
+    private RobotController robot;
+    private ElapsedTime time;
 
     @Override
     public void runOpMode() {
+        // file = new File("org/firstinspires/ftc/teamcode/____.tflite");
+        // agentHandler = new AgentHandler(file);
+        agentHandler = new AgentHandler();
+        agentHandler.initVuforia(hardwareMap);
+
+        robot = new RobotController(hardwareMap, RuntimeType.AGENT_CONTROLLED_AUTO);
+
         waitForStart();
-        telemetry.addLine(interpreter.getSignatureKeys()[0]);
-        telemetry.update();
-        sleep(10000);
 
-        // fl = forward - right + rotation
-        // fr = forward + right - rotation
-        // bl = forward + right + rotation
-        // br = forward - right - rotation
+        time.reset();
 
-        // forward = (fl + fr) / 2
-        // right = ((fr + bl) / 2) - forward
-        // rotation = fl - forward + right
+        while (true) {
+            // telemetry.addLine(interpreter.getSignatureKeys()[0]);
+            // telemetry.update();
+            // sleep(10000);
+
+            // fl = forward - right + rotation
+            // fr = forward + right - rotation
+            // bl = forward + right + rotation
+            // br = forward - right - rotation
+
+            // forward = (fl + fr) / 2
+            // right = ((fr + bl) / 2) - forward
+            // rotation = fl - forward + right
+        }
     }
 }

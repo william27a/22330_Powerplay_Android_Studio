@@ -39,8 +39,8 @@ public class Arena extends LinearOpMode {
         }
     }
 
-    public Arena(HardwareMap map, double xPosition, double yPosition, double startingDegrees, double shoulderStartingDegrees, boolean realMatch) {
-        this.robot = new RobotController(map);
+    public Arena(HardwareMap map, RuntimeType type, double xPosition, double yPosition, double startingDegrees, double shoulderStartingDegrees, boolean realMatch) {
+        this.robot = new RobotController(map, type);
         this.limitSwitch = (TouchSensor) map.get("limitSwitch");
 
         this.xPosition = xPosition;
@@ -61,8 +61,8 @@ public class Arena extends LinearOpMode {
         }
     }
 
-    public Arena(HardwareMap map, boolean leftSide) {
-        this.robot = new RobotController(map);
+    public Arena(HardwareMap map, RuntimeType type, boolean leftSide) {
+        this.robot = new RobotController(map, type);
         this.limitSwitch = (TouchSensor) map.get("limitSwitch");
 
         if (leftSide) {

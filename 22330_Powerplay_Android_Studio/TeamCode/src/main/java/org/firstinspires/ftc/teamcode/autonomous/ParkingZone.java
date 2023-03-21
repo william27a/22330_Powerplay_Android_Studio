@@ -10,6 +10,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.teamcode.classes.Arena;
+import org.firstinspires.ftc.teamcode.classes.RuntimeType;
 
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class ParkingZone extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        Arena arena = new Arena(hardwareMap, false);
+        Arena arena = new Arena(hardwareMap, RuntimeType.HARDCODED_AUTO, false);
 
         initVuforia();
         initTfod();

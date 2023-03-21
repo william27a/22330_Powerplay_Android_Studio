@@ -4,25 +4,37 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.firstinspires.ftc.teamcode.classes.RobotController;
+import org.firstinspires.ftc.teamcode.classes.RuntimeType;
+
 @TeleOp(name = "TestOp", group = "Experimental")
 public class TestOp extends LinearOpMode {
-    private DcMotor shoulder;
+    private RobotController robot;
 
-    private DcMotor arm;
-    private boolean armWasStatic = false;
+    //private DcMotor shoulder;
+
+    //private DcMotor arm;
+    //private boolean armWasStatic = false;
 
     @Override
     public void runOpMode() {
-        shoulder = (DcMotor) hardwareMap.get("shoulder");
-        arm = (DcMotor) hardwareMap.get("arm");
+        robot = new RobotController(hardwareMap, RuntimeType.DRIVER_CONTROLLED_TELEOP);
+        robot.prepareRL();
 
-        arm.setDirection(DcMotor.Direction.REVERSE);
+        //shoulder = (DcMotor) hardwareMap.get("shoulder");
+        //arm = (DcMotor) hardwareMap.get("arm");
+
+        //arm.setDirection(DcMotor.Direction.REVERSE);
 
         waitForStart();
         while (opModeIsActive()) {
             // Wat duh hek
             // Y values are negative when stick points up
             // positive when stick points down?!?!?!
+
+            robot.handleMovementBackwards(gamepad1);
+
+            /*
 
             shoulder.setPower(gamepad1.right_stick_y / 2);
             telemetry.addData("Shoulder power", gamepad1.right_stick_y/2);
@@ -41,6 +53,8 @@ public class TestOp extends LinearOpMode {
                 arm.setPower(0.3);
                 armWasStatic = true;
             }
+
+            */
         }
     }
 }
