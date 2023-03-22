@@ -21,8 +21,6 @@ public class LeftSide extends LinearOpMode {
         arena = new Arena(hardwareMap, RuntimeType.DRIVER_CONTROLLED_TELEOP, false);
         robot = arena.getRobot();
 
-        robot.readyTeleOp();
-
         waitForStart();
         while (opModeIsActive()) {
             robot.handleMovement(gamepad1);

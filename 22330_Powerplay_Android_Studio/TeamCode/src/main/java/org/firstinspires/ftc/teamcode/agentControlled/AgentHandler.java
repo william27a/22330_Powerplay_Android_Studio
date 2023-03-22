@@ -1,8 +1,5 @@
 package org.firstinspires.ftc.teamcode.agentControlled;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.vuforia.Image;
 
@@ -13,10 +10,7 @@ import org.tensorflow.lite.Interpreter;
 
 import java.io.File;
 import java.nio.ByteBuffer;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 public class AgentHandler {
     private Interpreter interpreter;
@@ -26,7 +20,7 @@ public class AgentHandler {
     private VuforiaLocalizer vuforia;
 
     public AgentHandler(File agentFile) {
-        interpreter = new Interpreter(agentFile);
+        this.interpreter = new Interpreter(agentFile);
     }
 
     public AgentHandler() {}
@@ -82,11 +76,15 @@ public class AgentHandler {
         return new byte[0];
     }
 
-    public String[] getSignatureKeys() {
-        return interpreter.getSignatureKeys();
-    }
+    public HashMap<Integer, Object> forward(byte[] frame, double degrees, double seconds) {
+        HashMap<Integer, Object> outputs = new HashMap<>();
+        Object[] inputs = new Object[3];
+        inputs[0] = frame;
+        inputs[1] = degrees;
+        inputs[2] = seconds;
 
-    public void forward(byte[] frame, double degrees, double seconds) {
-        //interpreter.runForMultipleInputsOutputs(inputs, outputs);
+        interpreter.runForMultipleInputsOutputs(inputs, outputs);
+
+        return outputs;
     }
 }

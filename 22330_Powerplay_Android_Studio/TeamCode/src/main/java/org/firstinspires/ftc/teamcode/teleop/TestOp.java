@@ -28,13 +28,6 @@ public class TestOp extends LinearOpMode {
         waitForStart();
         //while (opModeIsActive()) {
             // forwards, right, clockwise
-
-            robot.setMotorPowers(1, 1, 1, 1);
-            sleep(1000);
-            robot.setMotorPowers(1,-1,-1,1);
-            sleep(1000);
-            robot.setMotorPowers(1,-1,1,-1);
-            sleep(1000);
             /*
 
             shoulder.setPower(gamepad1.right_stick_y / 2);

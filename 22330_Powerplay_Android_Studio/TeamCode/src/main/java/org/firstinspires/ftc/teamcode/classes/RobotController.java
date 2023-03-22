@@ -6,6 +6,8 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import java.util.HashMap;
+
 public class RobotController extends LinearOpMode {
     public Chassis chassis;
     private final LongGrabber longGrabber;
@@ -301,10 +303,13 @@ public class RobotController extends LinearOpMode {
         }
     }
 
-    public void setMotorPowers(double fl, double fr, double bl, double br) {
-        this.chassis.frontLeft.setPower(fl);
-        this.chassis.frontRight.setPower(fr);
-        this.chassis.backLeft.setPower(bl);
-        this.chassis.backRight.setPower(br);
+    public void handleRL(HashMap<Integer, Object> outputs) {
+        this.chassis.frontLeft.setPower((double) outputs.get(0));
+        this.chassis.frontRight.setPower((double) outputs.get(1));
+        this.chassis.backLeft.setPower((double) outputs.get(2));
+        this.chassis.backRight.setPower((double) outputs.get(3));
+
+        this.sideLoader.lift.setPower((double) outputs.get(4));
+        this.sideLoader.claw.setPosition((double) outputs.get(5));
     }
 }
