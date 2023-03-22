@@ -29,48 +29,25 @@ public class RobotController extends LinearOpMode {
         this.longGrabber = new LongGrabber(map);
         this.sideLoader = new SideLoader(map);
 
-        if (type == RuntimeType.DRIVER_CONTROLLED_TELEOP) {
-            this.readyTeleOp();
-        } else if (type == RuntimeType.AGENT_CONTROLLED_TELEOP || type == RuntimeType.AGENT_CONTROLLED_AUTO) {
-            this.prepareRL();
+        if (type == RuntimeType.DRIVER_CONTROLLED_TELEOP || type == RuntimeType.AGENT_CONTROLLED_TELEOP
+                || type == RuntimeType.AGENT_CONTROLLED_AUTO) {
+            this.chassis.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
     }
 
-    public void readyTeleOp() {
-        this.chassis.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-    }
-
-    public void prepareRL() {
-        this.chassis.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-
-        this.chassis.prepareRL();
-    }
-
     // Set variables
-    public void setDriveSpeed(double x) {
-        this.chassis.setDriveSpeed(x);
-    }
+    public void setDriveSpeed(double x) { this.chassis.setDriveSpeed(x); }
 
-    public void setRotationSpeed(double x) {
-        this.chassis.setRotationSpeed(x);
-    }
+    public void setRotationSpeed(double x) { this.chassis.setRotationSpeed(x); }
 
-    public void setShoulderSpeed(double x) {
-        this.longGrabber.setShoulderSpeed(x);
-    }
+    public void setShoulderSpeed(double x) { this.longGrabber.setShoulderSpeed(x); }
 
-    public void setArmSpeed(double x) {
-        this.longGrabber.setArmSpeed(x);
-    }
+    public void setArmSpeed(double x) { this.longGrabber.setArmSpeed(x); }
 
-    public void setLiftSpeed(double x) {
-        this.sideLoader.setLiftSpeed(x);
-    }
+    public void setLiftSpeed(double x) { this.sideLoader.setLiftSpeed(x); }
 
     // Drive systems
-    public void setWheelMode(DcMotor.RunMode mode) {
-        this.chassis.setMode(mode);
-    }
+    public void setWheelMode(DcMotor.RunMode mode) { this.chassis.setMode(mode); }
 
     public void move(double inchesFL, double inchesFR, double inchesBL, double inchesBR) {
         double forward = (inchesFL + inchesFR) / 2;
@@ -85,17 +62,11 @@ public class RobotController extends LinearOpMode {
         this.chassis.move(inchesFL, inchesFR, inchesBL, inchesBR);
     }
 
-    public double getRotationDegrees() {
-        return this.chassis.getRotationDegrees();
-    }
+    public double getRotationDegrees() { return this.chassis.getRotationDegrees(); }
 
-    public void setRotationDegrees(double degrees, double speed) {
-        this.chassis.setRotationDegrees(degrees, speed);
-    }
+    public void setRotationDegrees(double degrees, double speed) { this.chassis.setRotationDegrees(degrees, speed); }
 
-    public double getRotationRadians() {
-        return this.chassis.getRotationRadians();
-    }
+    public double getRotationRadians() { return this.chassis.getRotationRadians(); }
 
     public void setRotationRadians(double radians, double speed) {
         this.chassis.setRotationRadians(radians, speed);
@@ -306,6 +277,16 @@ public class RobotController extends LinearOpMode {
             this.sideLoader.lift.setPower(0.3);
             liftWasStatic = true;
         }
+    }
+
+    public void handleAgentMovement(double forward, double right, double rotation, double lift, double claw) {
+        this.chassis.frontLeft.setPower(forward + right + rotation);
+        this.chassis.frontRight.setPower(forward - right - rotation);
+        this.chassis.backLeft.setPower(forward - right + rotation);
+        this.chassis.backRight.setPower(forward + right - rotation);
+
+        this.sideLoader.lift.setPower(lift);
+        this.sideLoader.claw.setPosition(claw);
     }
 
     public void downGear() {

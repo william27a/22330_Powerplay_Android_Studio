@@ -56,13 +56,6 @@ public class Chassis {
         this.imu.initialize(new IMU.Parameters(orientationOnRobot));
     }
 
-    public void prepareRL() {
-        RevHubOrientationOnRobot.LogoFacingDirection logo = logoFacingDirections[0]; // Up
-        RevHubOrientationOnRobot.UsbFacingDirection usb = usbFacingDirections[5]; // Right
-        RevHubOrientationOnRobot orientationOnRobot = new RevHubOrientationOnRobot(logo, usb);
-        this.imu.initialize(new IMU.Parameters(orientationOnRobot));
-    }
-
     public double getDriveSpeed() {
         return this.driveSpeed;
     }
