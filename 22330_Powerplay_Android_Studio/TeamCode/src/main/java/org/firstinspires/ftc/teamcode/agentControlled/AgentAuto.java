@@ -31,6 +31,7 @@ public class AgentAuto extends LinearOpMode {
         // agentHandler = new AgentHandler(file);
         agentHandler = new AgentHandler();
         agentHandler.initVuforia(hardwareMap);
+        agentHandler.initEnvironment("org.firstinspires.ftc.teamcode.SimpleBehavior.onnx");
 
         arena = new Arena(hardwareMap, RuntimeType.AGENT_CONTROLLED_AUTO, false);
         robot = arena.getRobot();
@@ -40,8 +41,22 @@ public class AgentAuto extends LinearOpMode {
         time.reset();
 
         while (true) {
+            float rotation = agentHandler.runAuto((float)arena.getRotationDegrees());
+
+            float wheelFL = rotation;
+            float wheelFR = -rotation;
+            float wheelBL = rotation;
+            float wheelBR = -rotation;
+
+            float[] outputs = new float[4];
+            outputs[0] = wheelFL;
+            outputs[1] = wheelFR;
+            outputs[2] = wheelBL;
+            outputs[3] = wheelBR;
+
             // // alter arena.getRotationDegrees() to return value from 0 to 360
-            robot.handleRL(agentHandler.runAuto(agentHandler.getFrame(), (float)arena.getRotationDegrees(), (float)time.seconds()));
+            robot.handleRL(outputs);
+            //robot.handleRL(agentHandler.runAuto(/*agentHandler.getFrame(), */(float)arena.getRotationDegrees()/*, (float)time.seconds()*/));
 
             // telemetry.addLine(interpreter.getSignatureKeys()[0]);
             // telemetry.update();
