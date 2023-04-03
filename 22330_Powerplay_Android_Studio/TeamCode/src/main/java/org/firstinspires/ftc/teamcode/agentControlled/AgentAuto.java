@@ -41,7 +41,7 @@ public class AgentAuto extends LinearOpMode {
 
         while (true) {
             // // alter arena.getRotationDegrees() to return value from 0 to 360
-            robot.handleRL(agentHandler.forward(agentHandler.getFrame(), arena.getRotationDegrees(), time.seconds()));
+            robot.handleRL(agentHandler.runAuto(agentHandler.getFrame(), (float)arena.getRotationDegrees(), (float)time.seconds()));
 
             // telemetry.addLine(interpreter.getSignatureKeys()[0]);
             // telemetry.update();

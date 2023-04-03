@@ -303,13 +303,10 @@ public class RobotController extends LinearOpMode {
         }
     }
 
-    public void handleRL(HashMap<Integer, Object> outputs) {
-        this.chassis.frontLeft.setPower((double) outputs.get(0));
-        this.chassis.frontRight.setPower((double) outputs.get(1));
-        this.chassis.backLeft.setPower((double) outputs.get(2));
-        this.chassis.backRight.setPower((double) outputs.get(3));
-
-        this.sideLoader.lift.setPower((double) outputs.get(4));
-        this.sideLoader.claw.setPosition((double) outputs.get(5));
+    public void handleRL(float[] outputs) {
+        this.chassis.frontLeft.setPower((double) outputs[0]);
+        this.chassis.frontRight.setPower((double) outputs[1]);
+        this.chassis.backLeft.setPower((double) outputs[2]);
+        this.chassis.backRight.setPower((double) outputs[3]);
     }
 }

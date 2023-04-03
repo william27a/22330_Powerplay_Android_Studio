@@ -2,28 +2,50 @@ package org.firstinspires.ftc.teamcode.agentControlled;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.vuforia.Image;
+import com.vuforia.PIXEL_FORMAT;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.tensorflow.lite.Interpreter;
 
-import java.io.File;
 import java.nio.ByteBuffer;
-import java.util.HashMap;
+import java.util.Map;
+
+import ai.onnxruntime.OnnxJavaType;
+import ai.onnxruntime.OnnxTensor;
+import ai.onnxruntime.OnnxTensorLike;
+import ai.onnxruntime.OrtEnvironment;
+import ai.onnxruntime.OrtException;
+import ai.onnxruntime.OrtSession;
 
 public class AgentHandler {
-    private Interpreter interpreter;
+    OrtEnvironment env;
+    OrtSession session;
+
+    private int signalInt = -1;
 
     private static final String VUFORIA_KEY = "ATZ/F4X/////AAABmSjnLIM91kSRo8TfH6CpvkpQb02HUOXzsAmc9sWr5aQKwBP0+GpVCddkSd7qVIgzYGRsutM1OEr4dRHyoy7G3gE8kovM+mnw5nVVkEJQEOhXlUt8ZN23VxVEMHO9qDIcH4vEv6w105kXo9FLJlikfRmKzVjMF/YAS4bU9UQVYpVzXCrEaoSE67McYRahSc3JfFmVkMqUCS2DDqyBC3MkN/YsO+EPmjz4iDIGz9HkSHkxylCOQ3rSHZQwZoGyrPJfkpl4XJoH+dKIawL3KeEWbMOIwDFR/IECVa8SNEeeaThDF3pvha2lTtdtgh5XLIcdSi27UQVTnaaM+5/G2gHLPMQ4n3DHIg4CQvmChLZTwD65";
 
     private VuforiaLocalizer vuforia;
 
-    public AgentHandler(File agentFile) {
-        this.interpreter = new Interpreter(agentFile);
+    public void initEnvironment() {
+        try {
+            env = OrtEnvironment.getEnvironment();
+            OrtSession.SessionOptions opts = new OrtSession.SessionOptions();
+            session = env.createSession("path/to/your/model.onnx", opts);
+        } catch ( OrtException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public AgentHandler() {}
+    public void closeEnvironment() {
+        try {
+            session.close();
+            env.close();
+        } catch (OrtException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public void initVuforia(HardwareMap map) {
         // Usual code to initialize Vuforia
@@ -40,19 +62,13 @@ public class AgentHandler {
         vuforia.setFrameQueueCapacity(3);
     }
 
-    public byte[] getFrame() {
+    public ByteBuffer getFrame() {
         VuforiaLocalizer.CloseableFrame frame = vuforia.getFrameQueue().poll();
-
-        if (frame == null) {
-            frame.close();
-            return new byte[0];
-        }
 
         for (int i = 0; i < frame.getNumImages(); i++) {
             Image image = frame.getImage(i);
 
-            // RGB565 is 1
-            if (image.getFormat() == 1) {
+            if (image.getFormat() == PIXEL_FORMAT.GRAYSCALE) {
                 int width = image.getWidth();
 
                 int height = image.getHeight();
@@ -67,24 +83,40 @@ public class AgentHandler {
 
                 byte[] bytes = new byte[2 * width * height];
 
-                buf.get(bytes); // Fills the array from the byte buffer
-
-                return buf.array();
+                return buf;
             }
         }
 
-        return new byte[0];
+        return null;
     }
 
-    public HashMap<Integer, Object> forward(byte[] frame, double degrees, double seconds) {
-        HashMap<Integer, Object> outputs = new HashMap<>();
-        Object[] inputs = new Object[3];
-        inputs[0] = frame;
-        inputs[1] = degrees;
-        inputs[2] = seconds;
+    public float[] runAuto(ByteBuffer image, float rotationFloat, float timeFloat) {
+        try {
+            ByteBuffer rotation = ByteBuffer.allocateDirect(4).putFloat(rotationFloat);
+            ByteBuffer time = ByteBuffer.allocateDirect(4).putFloat(timeFloat);
+            ByteBuffer signal = ByteBuffer.allocateDirect(4).putInt(signalInt);
 
-        interpreter.runForMultipleInputsOutputs(inputs, outputs);
+            Map<String, ? extends OnnxTensorLike> tensor = Map.of(
+                    "image", OnnxTensor.createTensor(env, image, new long[]{1, 1, 256, 256}, OnnxJavaType.FLOAT
+                    ), "rotation", OnnxTensor.createTensor(env, rotation, new long[]{1}, OnnxJavaType.FLOAT
+                    ), "seconds", OnnxTensor.createTensor(env, time, new long[]{1}, OnnxJavaType.FLOAT
+                    ), "signal", OnnxTensor.createTensor(env, signal, new long[]{1}, OnnxJavaType.FLOAT
+                    ));
 
-        return outputs;
+            float[] output = new float[4];
+
+            // Run the model
+            OrtSession.Result result = session.run(tensor);
+
+            for (int i = 0; i < 4; i++) {
+                output[i] = (float)result.get(i).getValue();
+            }
+            signalInt = (int)result.get(5).getValue();
+
+            return output;
+
+        } catch (OrtException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
