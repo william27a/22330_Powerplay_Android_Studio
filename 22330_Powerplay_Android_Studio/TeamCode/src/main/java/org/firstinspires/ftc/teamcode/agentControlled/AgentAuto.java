@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.classes.agentControlled;
+package org.firstinspires.ftc.teamcode.agentControlled;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
