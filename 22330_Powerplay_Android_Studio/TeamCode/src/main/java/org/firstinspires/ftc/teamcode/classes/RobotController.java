@@ -174,10 +174,10 @@ public class RobotController extends LinearOpMode {
 
         if (gamepad1.left_bumper) {
             if (!gamepad1.right_bumper) {
-                this.sideLoader.claw.setPosition(1);
+                this.sideLoader.claw.setPosition(0);
             }
         } else if (gamepad1.right_bumper) {
-            this.sideLoader.claw.setPosition(0);
+            this.sideLoader.claw.setPosition(1);
         }
 
         if (-gamepad1.right_stick_y != 0) {

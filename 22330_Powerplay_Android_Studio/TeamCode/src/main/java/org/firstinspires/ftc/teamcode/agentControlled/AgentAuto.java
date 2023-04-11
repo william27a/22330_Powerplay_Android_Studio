@@ -35,7 +35,7 @@ public class AgentAuto extends LinearOpMode {
         time.reset();
 
         while (true) {
-            float rotation = agentHandler.runAuto((float)arena.getRotationDegrees());
+            float rotation = agentHandler.runAuto((byte)arena.getRotationDegrees());
 
             float wheelFL = rotation;
             float wheelFR = -rotation;

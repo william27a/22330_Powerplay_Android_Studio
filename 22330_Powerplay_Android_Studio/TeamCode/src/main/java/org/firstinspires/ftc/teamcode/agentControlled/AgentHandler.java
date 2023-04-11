@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.agentControlled;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.vuforia.Image;
 import com.vuforia.PIXEL_FORMAT;
@@ -9,11 +12,14 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 
 import java.nio.ByteBuffer;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 
 import ai.onnxruntime.OnnxJavaType;
 import ai.onnxruntime.OnnxTensor;
-import ai.onnxruntime.OnnxTensorLike;
 import ai.onnxruntime.OrtEnvironment;
 import ai.onnxruntime.OrtException;
 import ai.onnxruntime.OrtSession;
@@ -90,28 +96,26 @@ public class AgentHandler {
         return null;
     }
 
-    public float/*[]*/ runAuto(/*ByteBuffer image, */float rotationFloat/*, float timeFloat*/) {
+    public float/*[]*/ runAuto(/*ByteBuffer image, */byte rotationByte/*, float timeFloat*/) {
         try {
-            ByteBuffer rotation = ByteBuffer.allocateDirect(4).putFloat(rotationFloat);
+            ByteBuffer rotation = ByteBuffer.allocateDirect(1);
+            //rotation = rotation.putFloat(rotationFloat);
+            rotation.put(rotationByte).rewind();
             /*ByteBuffer time = ByteBuffer.allocateDirect(4).putFloat(timeFloat);
             ByteBuffer signal = ByteBuffer.allocateDirect(4).putInt(signalInt);*/
 
-            Map<String, ? extends OnnxTensorLike> tensor = Map.of(
-                    //"image", OnnxTensor.createTensor(env, image, new long[]{1, 1, 256, 256}, OnnxJavaType.FLOAT
-                    /*), */"rotation", OnnxTensor.createTensor(env, rotation, new long[]{1}, OnnxJavaType.FLOAT
-                    //), "seconds", OnnxTensor.createTensor(env, time, new long[]{1}, OnnxJavaType.FLOAT
-                    //), "signal", OnnxTensor.createTensor(env, signal, new long[]{1}, OnnxJavaType.FLOAT
-                    ));
+            Map<String, OnnxTensor> tensor = Collections.emptyMap();
+            tensor.put("rotation", OnnxTensor.createTensor(env, rotation, new long[]{1}));
 
             float[] output = new float[4];
 
             // Run the model
             OrtSession.Result result = session.run(tensor);
 
-            //for (int i = 0; i < 4; i++) {
-            //    output[i] = (float)result.get(i).getValue();
-            //}
-            //signalInt = (int)result.get(5).getValue();
+            for (int i = 0; i < 4; i++) {
+                output[i] = (float)result.get(i).getValue();
+            }
+            signalInt = (int)result.get(5).getValue();
 
             return output[0];
 
