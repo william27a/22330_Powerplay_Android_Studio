@@ -45,10 +45,6 @@ public class Preload extends LinearOpMode {
         telemetry.update();
         waitForStart();
 
-
-        robot.setShoulderDegrees(0, false);
-        robot.openHand();
-
         ElapsedTime time = new ElapsedTime();
 
         List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();

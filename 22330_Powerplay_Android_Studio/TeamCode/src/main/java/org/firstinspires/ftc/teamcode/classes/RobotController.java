@@ -10,7 +10,6 @@ import java.util.HashMap;
 
 public class RobotController extends LinearOpMode {
     public Chassis chassis;
-    private final LongGrabber longGrabber;
     private final SideLoader sideLoader;
 
     // TeleOp
@@ -22,13 +21,11 @@ public class RobotController extends LinearOpMode {
 
     public RobotController(Chassis chassis, LongGrabber longGrabber, SideLoader sideLoader, RuntimeType type) {
         this.chassis = chassis;
-        this.longGrabber = longGrabber;
         this.sideLoader = sideLoader;
     }
 
     public RobotController(HardwareMap map, RuntimeType type) {
         this.chassis = new Chassis(map);
-        this.longGrabber = new LongGrabber(map);
         this.sideLoader = new SideLoader(map);
 
         if (type == RuntimeType.DRIVER_CONTROLLED_TELEOP || type == RuntimeType.AGENT_CONTROLLED_TELEOP
@@ -41,10 +38,6 @@ public class RobotController extends LinearOpMode {
     public void setDriveSpeed(double x) { this.chassis.setDriveSpeed(x); }
 
     public void setRotationSpeed(double x) { this.chassis.setRotationSpeed(x); }
-
-    public void setShoulderSpeed(double x) { this.longGrabber.setShoulderSpeed(x); }
-
-    public void setArmSpeed(double x) { this.longGrabber.setArmSpeed(x); }
 
     public void setLiftSpeed(double x) { this.sideLoader.setLiftSpeed(x); }
 
@@ -72,72 +65,6 @@ public class RobotController extends LinearOpMode {
 
     public void setRotationRadians(double radians, double speed) {
         this.chassis.setRotationRadians(radians, speed);
-    }
-
-    // Shoulder systems
-    public void setShoulderDegrees(double degrees, boolean wait) {
-        this.longGrabber.setShoulderDegrees(degrees, wait);
-    }
-
-    public double getShoulderDegrees() {
-        return this.longGrabber.getShoulderDegrees();
-    }
-
-    public void setShoulderRadians(double radians, boolean wait) {
-        this.longGrabber.setShoulderRadians(radians, wait);
-    }
-
-    public double getShoulderRadians() {
-        return this.longGrabber.getShoulderRadians();
-    }
-
-    public void resetShoulderUp(double speed) {
-        this.longGrabber.resetShoulderUp(speed);
-    }
-
-    public void resetShoulderDown(double speed) {
-        this.longGrabber.resetShoulderDown(speed);
-    }
-
-    public void resetShoulderUpDown(double speed) {
-        this.longGrabber.resetShoulderUpDown(speed);
-    }
-
-    // Arm systems
-    public void armBrake() {
-        this.longGrabber.armBrake();
-    }
-
-    public void stopArmBrake() {
-        this.longGrabber.stopArmBrake();
-    }
-
-    public double getArmZ() {
-        return this.longGrabber.getArmZ();
-    }
-
-    public void setArmZ(double z, boolean wait) {
-        this.longGrabber.setArmZ(z, wait);
-    }
-
-    public double getHandZ() {
-        return this.getArmZ() + Global.HAND_AWAY_FROM_ARM + (Global.HAND_LENGTH / 2);
-    }
-
-    public void setHandZ(double inches, boolean wait) {
-        this.setArmZ(inches - Global.HAND_AWAY_FROM_ARM - (Global.HAND_LENGTH / 2), wait);
-    }
-
-    public void openHand() {
-        this.longGrabber.openHand();
-    }
-
-    public void openHandFully() {
-        this.longGrabber.openHandFully();
-    }
-
-    public void closeHand() {
-        this.longGrabber.closeHand();
     }
 
     // Lift systems
@@ -178,14 +105,10 @@ public class RobotController extends LinearOpMode {
 
     // All systems
     public void waitForCompletion() {
-        while (
-                (this.longGrabber != null && this.longGrabber.isBusy()) ||
-                        (this.sideLoader != null && this.sideLoader.isBusy())
-        ) {}
+        while (this.sideLoader != null && this.sideLoader.isBusy()) {}
     }
 
     public void deactivate() {
-        this.longGrabber.deactivate();
         this.sideLoader.deactivate();
     }
 
@@ -194,11 +117,6 @@ public class RobotController extends LinearOpMode {
     }
 
     public void handleMovement(Gamepad gamepad1) {
-        if (gamepad1.b) {
-            this.setArmZ(0, false);
-            this.setShoulderDegrees(0, false);
-        }
-
         // assign values to each variable included in chassis math
         pivot = gamepad1.right_trigger - gamepad1.left_trigger;
         x = gamepad1.left_stick_x;
@@ -216,10 +134,10 @@ public class RobotController extends LinearOpMode {
 
         if (gamepad1.left_bumper) {
             if (!gamepad1.right_bumper) {
-                this.sideLoader.claw.setPosition(1);
+                this.sideLoader.claw.setPosition(0);
             }
         } else if (gamepad1.right_bumper) {
-            this.sideLoader.claw.setPosition(0);
+            this.sideLoader.claw.setPosition(1);
         }
 
         if (-gamepad1.right_stick_y != 0) {
@@ -238,10 +156,6 @@ public class RobotController extends LinearOpMode {
     }
 
     public void handleMovementBackwards(Gamepad gamepad1) {
-        if (gamepad1.b) {
-            this.setArmZ(0, false);
-            this.setShoulderDegrees(0, false);
-        }
 
         // assign values to each variable included in chassis math
         pivot = gamepad1.right_trigger - gamepad1.left_trigger;

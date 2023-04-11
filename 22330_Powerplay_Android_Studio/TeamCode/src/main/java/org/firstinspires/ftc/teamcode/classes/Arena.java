@@ -175,62 +175,6 @@ public class Arena extends LinearOpMode {
         }
     }
 
-    // Shoulder systems
-    public double getShoulderDegrees() {
-        return this.robot.getShoulderDegrees() + this.shoulderOffsetDegrees;
-    }
-
-    public void setShoulderDegrees(double degrees, boolean wait) {
-        this.robot.setShoulderDegrees(degrees - this.shoulderOffsetDegrees, wait);
-    }
-
-    public double getShoulderRadians() {
-        return this.robot.getShoulderRadians() + this.shoulderOffsetRadians;
-    }
-
-    public void setShoulderRadians(double radians, boolean wait) {
-        this.robot.setShoulderRadians(radians - this.shoulderOffsetRadians, wait);
-    }
-
-    // Highest-level methods
-    public void grabConeOnStack(double degrees, int cone) {
-        this.robot.stopArmBrake();
-        this.robot.openHand();
-
-        double height = Global.coneHeightFromStack(cone) - Global.SHOULDER_ABOVE_GROUND;
-        double length = Global.LENGTH_TO_STACK;
-        double hypotenuse = Global.getHypotenuse(height, length);
-
-        this.setRotationDegrees(degrees + Global.DEGREES_TO_STACK, 1);
-        this.setRotationDegrees(degrees + Global.DEGREES_TO_STACK, 0.5);
-
-        this.setShoulderDegrees(Math.toDegrees(Math.atan(height / length)), true);
-        this.robot.setHandZ(hypotenuse, true);
-        this.robot.closeHand();
-        sleep(1000);
-
-        this.robot.resetShoulderUpDown(1);
-        this.robot.setHandZ(hypotenuse - 10, false);
-
-        this.robot.waitForCompletion();
-        this.robot.deactivate();
-    }
-
-    public void placeConeOnJunction(double degrees) {
-        double length = Global.LENGTH_TO_JUNCTION;
-        double height = Global.HEIGHT_TO_JUNCTION;
-        double hypotenuse = Global.getHypotenuse(length, height);
-
-        this.setRotationDegrees(degrees + Global.DEGREES_TO_JUNCTION, 1);
-        this.setRotationDegrees(degrees + Global.DEGREES_TO_JUNCTION, 0.5);
-
-        this.setShoulderDegrees(Math.toDegrees(Math.atan(height / length)), false);
-        this.robot.setHandZ(hypotenuse, true);
-        this.robot.armBrake();
-        this.robot.openHand();
-        sleep(1000);
-    }
-
     @Override
     public void runOpMode() {
     }

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.agentControlled;
+package org.firstinspires.ftc.teamcode.classes.agentControlled;
 
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.vuforia.Image;

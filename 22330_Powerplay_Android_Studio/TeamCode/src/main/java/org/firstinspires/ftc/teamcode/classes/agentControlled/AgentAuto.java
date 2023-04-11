@@ -1,20 +1,14 @@
-package org.firstinspires.ftc.teamcode.agentControlled;
+package org.firstinspires.ftc.teamcode.classes.agentControlled;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.vuforia.Image;
 
-import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.teamcode.classes.Arena;
 import org.firstinspires.ftc.teamcode.classes.RobotController;
 import org.firstinspires.ftc.teamcode.classes.RuntimeType;
 
 import java.io.File;
-import java.nio.ByteBuffer;
-import java.util.HashMap;
 
 @Autonomous(name = "AgentAuto", group = "Agent")
 public class AgentAuto extends LinearOpMode {
@@ -27,17 +21,17 @@ public class AgentAuto extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        // file = new File("org/firstinspires/ftc/teamcode/____.tflite");
-        // agentHandler = new AgentHandler(file);
         agentHandler = new AgentHandler();
         agentHandler.initVuforia(hardwareMap);
-        agentHandler.initEnvironment("org.firstinspires.ftc.teamcode.SimpleBehavior.onnx");
-
+        agentHandler.initEnvironment("sdcard/FIRST/tflitemodels/SimpleBehavior.onnx");
         arena = new Arena(hardwareMap, RuntimeType.AGENT_CONTROLLED_AUTO, false);
         robot = arena.getRobot();
+        time = new ElapsedTime();
+
+        telemetry.addLine("init complete");
+        telemetry.update();
 
         waitForStart();
-
         time.reset();
 
         while (true) {
