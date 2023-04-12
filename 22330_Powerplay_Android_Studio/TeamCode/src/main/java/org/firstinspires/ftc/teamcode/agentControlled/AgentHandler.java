@@ -107,7 +107,7 @@ public class AgentHandler {
 
             Map<String, OnnxTensor> tensor = new HashMap<>(
                     Map.of(
-                            "rotation", OnnxTensor.createTensor(env, rotation, new long[]{1})
+                            "obs_0", OnnxTensor.createTensor(env, rotation, new long[]{1,1}, OnnxJavaType.FLOAT)
                             /*"time", OnnxTensor.createTensor(env, time, new long[]{1}),
                             "signal", OnnxTensor.createTensor(env, signal, new long[]{1})*/
                     )
