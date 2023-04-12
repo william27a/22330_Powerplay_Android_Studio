@@ -14,6 +14,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import java.nio.ByteBuffer;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
@@ -104,8 +105,16 @@ public class AgentHandler {
             /*ByteBuffer time = ByteBuffer.allocateDirect(4).putFloat(timeFloat);
             ByteBuffer signal = ByteBuffer.allocateDirect(4).putInt(signalInt);*/
 
-            Map<String, OnnxTensor> tensor = Collections.emptyMap();
-            tensor.put("rotation", OnnxTensor.createTensor(env, rotation, new long[]{1}));
+            Map<String, OnnxTensor> tensor = new HashMap<>(
+                    Map.of(
+                            "rotation", OnnxTensor.createTensor(env, rotation, new long[]{1})
+                            /*"time", OnnxTensor.createTensor(env, time, new long[]{1}),
+                            "signal", OnnxTensor.createTensor(env, signal, new long[]{1})*/
+                    )
+            );
+
+            //Map<String, OnnxTensor> tensor = Collections.emptyMap();
+            //tensor.put("rotation", OnnxTensor.createTensor(env, rotation, new long[]{1}));
 
             float[] output = new float[4];
 
