@@ -37,7 +37,7 @@ public class OnePlusParkingRight extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        Arena arena = new Arena(hardwareMap, RuntimeType.HARDCODED_AUTO, false);
+        Arena arena = new Arena(hardwareMap, RuntimeType.HARDCODED_AUTO, Global.rightPos);
         RobotController robot = arena.getRobot();
 
         initVuforia();

@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.classes.Arena;
+import org.firstinspires.ftc.teamcode.classes.Global;
 import org.firstinspires.ftc.teamcode.classes.RobotController;
 import org.firstinspires.ftc.teamcode.classes.RuntimeType;
 
@@ -24,7 +25,7 @@ public class AgentAuto extends LinearOpMode {
         agentHandler = new AgentHandler();
         agentHandler.initVuforia(hardwareMap);
         agentHandler.initEnvironment("sdcard/FIRST/tflitemodels/SimpleBehavior.onnx");
-        arena = new Arena(hardwareMap, RuntimeType.AGENT_CONTROLLED_AUTO, false);
+        arena = new Arena(hardwareMap, RuntimeType.AGENT_CONTROLLED_AUTO, Global.leftPos);
         robot = arena.getRobot();
         time = new ElapsedTime();
 

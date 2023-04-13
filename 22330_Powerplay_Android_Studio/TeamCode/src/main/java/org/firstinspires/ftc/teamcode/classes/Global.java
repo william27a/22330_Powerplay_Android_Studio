@@ -3,6 +3,18 @@ package org.firstinspires.ftc.teamcode.classes;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 public class Global {
+    // Positions
+    public final static double[] leftPos = new double[]{33.75, 7.5};
+    public final static double[] rightPos = new double[]{103, 7.5};
+
+    public final static double[] leftStack = new double[]{58.875, 2};
+    public final static double[] rightStack = new double[]{58.875, 139};
+
+    public final static double[] leftJunction = new double[]{47.25,70.5};
+    public final static double[] rightJunction = new double[]{94.5,70.5};
+
+    public final static double[] clawOffset = new double[]{9, 1.5};
+
     // Drive systems
     public final static double DRIVE_CPI = 44.4274370516;
     public final static double SIDE_TUNE = 1.20954907162;
@@ -58,9 +70,7 @@ public class Global {
     public final static double DEGREES_TO_JUNCTION = -13;
 
     // Cone stacks
-    public final static double CONE_TO_CONE_HEIGHT = 1.25;
-    public final static double DEGREES_TO_STACK = -2;
-    public final static double LENGTH_TO_STACK = 24;
+    public final static double CONE_TO_CONE_HEIGHT = 1.375;
 
     public static double fitToRange(double x, double start, double end) {
         double length = end - start;

@@ -37,7 +37,7 @@ public class OnePlusParkingLeft extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        Arena arena = new Arena(hardwareMap, RuntimeType.HARDCODED_AUTO, true);
+        Arena arena = new Arena(hardwareMap, RuntimeType.HARDCODED_AUTO, Global.leftPos);
         RobotController robot = arena.getRobot();
 
         initVuforia();
@@ -76,13 +76,10 @@ public class OnePlusParkingLeft extends LinearOpMode {
             robot.setClawHeight(4, true);
             robot.liftBrake();
             arena.moveToSquare(5, 1, true);
-            arena.setRotationDegrees(0, 0.6);
             arena.moveToSquare(5, 3.521, true);
-            arena.setRotationDegrees(0, 0.6);
             robot.setClawHeight(Global.HIGH_JUNCTION_HEIGHT + 5, true);
             robot.liftBrake();
-            arena.move(3.5, -3.5, -3.5, 3.5);
-            arena.setRotationDegrees(0, 0.6);
+            arena.moveClawToPos(Global.leftJunction, true);
             robot.openClaw();
             sleep(1000);
 
