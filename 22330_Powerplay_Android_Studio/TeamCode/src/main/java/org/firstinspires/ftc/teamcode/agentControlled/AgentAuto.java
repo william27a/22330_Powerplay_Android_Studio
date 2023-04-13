@@ -35,18 +35,7 @@ public class AgentAuto extends LinearOpMode {
         time.reset();
 
         while (true) {
-            float rotation = agentHandler.runAuto((byte)arena.getRotationDegrees());
-
-            float wheelFL = rotation;
-            float wheelFR = -rotation;
-            float wheelBL = rotation;
-            float wheelBR = -rotation;
-
-            float[] outputs = new float[4];
-            outputs[0] = wheelFL;
-            outputs[1] = wheelFR;
-            outputs[2] = wheelBL;
-            outputs[3] = wheelBR;
+            float[] outputs = agentHandler.runAuto((byte)arena.getRotationDegrees());
 
             // // alter arena.getRotationDegrees() to return value from 0 to 360
             robot.handleRL(outputs);

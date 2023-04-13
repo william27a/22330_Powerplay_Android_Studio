@@ -97,7 +97,7 @@ public class AgentHandler {
         return null;
     }
 
-    public float/*[]*/ runAuto(/*ByteBuffer image, */byte rotationByte/*, float timeFloat*/) {
+    public float[]/*[]*/ runAuto(/*ByteBuffer image, */byte rotationByte/*, float timeFloat*/) {
         try {
             ByteBuffer rotation = ByteBuffer.allocateDirect(1);
             //rotation = rotation.putFloat(rotationFloat);
@@ -121,12 +121,17 @@ public class AgentHandler {
             // Run the model
             OrtSession.Result result = session.run(tensor);
 
-            for (int i = 0; i < 4; i++) {
-                output[i] = (float)result.get(i).getValue();
-            }
-            signalInt = (int)result.get(5).getValue();
+            output[0] = (float)result.get(0).getValue();
+            output[1] = -(float)result.get(0).getValue();
+            output[2] = (float)result.get(0).getValue();
+            output[3] = -(float)result.get(0).getValue();
 
-            return output[0];
+            //for (int i = 0; i < 4; i++) {
+            //    output[i] = (float)result.get(i).getValue();
+            //}
+            //signalInt = (int)result.get(5).getValue();
+
+            return output;
 
         } catch (OrtException e) {
             throw new RuntimeException(e);
