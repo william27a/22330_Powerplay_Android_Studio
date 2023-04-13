@@ -121,10 +121,10 @@ public class AgentHandler {
             // Run the model
             OrtSession.Result result = session.run(tensor);
 
-            output[0] = (float)result.get(0).getValue();
-            output[1] = -(float)result.get(0).getValue();
-            output[2] = (float)result.get(0).getValue();
-            output[3] = -(float)result.get(0).getValue();
+            output[0] = ((float[])result.get(0).getValue())[0];
+            output[1] = -((float[])result.get(0).getValue())[0];
+            output[2] = ((float[])result.get(0).getValue())[0];
+            output[3] = -((float[])result.get(0).getValue())[0];
 
             //for (int i = 0; i < 4; i++) {
             //    output[i] = (float)result.get(i).getValue();
