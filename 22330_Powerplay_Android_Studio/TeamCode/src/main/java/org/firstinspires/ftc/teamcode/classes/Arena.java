@@ -13,23 +13,33 @@ public class Arena extends LinearOpMode {
     private double calibrateYawDegrees;
     private double calibrateYawRadians;
 
-    public Arena(RobotController robot, double[] pos) {
+    public Arena(RobotController robot, Side side) {
         this.robot = robot;
 
-        this.xPosition = pos[0];
-        this.yPosition = pos[1];
-
-        this.calibrateYawDegrees = -this.robot.getRotationDegrees();
+        if (side == Side.LEFT) {
+            this.xPosition = Global.leftPos[0];
+            this.yPosition = Global.leftPos[1];
+            this.calibrateYawDegrees = -this.robot.getRotationDegrees();
+        } else {
+            this.xPosition = Global.rightPos[0];
+            this.yPosition = Global.rightPos[1];
+            this.calibrateYawDegrees = 180-this.robot.getRotationDegrees();
+        }
         this.calibrateYawRadians = Math.toRadians(calibrateYawDegrees);
     }
 
-    public Arena(HardwareMap map, RuntimeType type, double[] pos) {
-        this.robot = new RobotController(map, type);
+    public Arena(HardwareMap map, RuntimeType type, Side side) {
+        this.robot = new RobotController(map, type, side);
 
-        this.xPosition = pos[0];
-        this.yPosition = pos[1];
-
-        this.calibrateYawDegrees = -this.robot.getRotationDegrees();
+        if (side == Side.LEFT) {
+            this.xPosition = Global.leftPos[0];
+            this.yPosition = Global.leftPos[1];
+            this.calibrateYawDegrees = -this.robot.getRotationDegrees();
+        } else {
+            this.xPosition = Global.rightPos[0];
+            this.yPosition = Global.rightPos[1];
+            this.calibrateYawDegrees = 180-this.robot.getRotationDegrees();
+        }
         this.calibrateYawRadians = Math.toRadians(calibrateYawDegrees);
     }
 

@@ -12,6 +12,7 @@ import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.teamcode.classes.Arena;
 import org.firstinspires.ftc.teamcode.classes.Global;
 import org.firstinspires.ftc.teamcode.classes.RuntimeType;
+import org.firstinspires.ftc.teamcode.classes.Side;
 
 import java.util.List;
 
@@ -31,7 +32,7 @@ public class ParkingZone extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        Arena arena = new Arena(hardwareMap, RuntimeType.HARDCODED_AUTO, Global.leftPos);
+        Arena arena = new Arena(hardwareMap, RuntimeType.HARDCODED_AUTO, Side.LEFT);
 
         initVuforia();
         initTfod();
@@ -62,13 +63,13 @@ public class ParkingZone extends LinearOpMode {
             telemetry.addData("recognition: ", label);
             telemetry.update();
 
-            arena.moveToSquare(5, 3, false);
+            arena.moveToSquare(2, 3, false);
 
             // if label is 2omega the robot is already in the right place
             if (label.equals("1monkey")) {
-                arena.moveToSquare(4, 3, false);
+                arena.moveToSquare(1, 3, false);
             } else if (label.equals("3banana")) {
-                arena.moveToSquare(6, 3, false);
+                arena.moveToSquare(3, 3, false);
             }
         }
     }

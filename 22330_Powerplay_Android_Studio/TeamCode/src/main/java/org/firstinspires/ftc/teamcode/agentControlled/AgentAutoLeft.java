@@ -5,14 +5,14 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.classes.Arena;
-import org.firstinspires.ftc.teamcode.classes.Global;
 import org.firstinspires.ftc.teamcode.classes.RobotController;
 import org.firstinspires.ftc.teamcode.classes.RuntimeType;
+import org.firstinspires.ftc.teamcode.classes.Side;
 
 import java.io.File;
 
-@Autonomous(name = "AgentAuto", group = "Agent")
-public class AgentAuto extends LinearOpMode {
+@Autonomous(name = "AgentAutoLeft", group = "Agent")
+public class AgentAutoLeft extends LinearOpMode {
     private File file;
     private AgentHandler agentHandler;
 
@@ -25,7 +25,7 @@ public class AgentAuto extends LinearOpMode {
         agentHandler = new AgentHandler();
         agentHandler.initVuforia(hardwareMap);
         agentHandler.initEnvironment("sdcard/FIRST/tflitemodels/SimpleBehavior.onnx");
-        arena = new Arena(hardwareMap, RuntimeType.AGENT_CONTROLLED_AUTO, Global.leftPos);
+        arena = new Arena(hardwareMap, RuntimeType.AGENT_CONTROLLED_AUTO, Side.LEFT);
         robot = arena.getRobot();
         time = new ElapsedTime();
 

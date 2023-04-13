@@ -13,6 +13,7 @@ import org.firstinspires.ftc.teamcode.classes.Arena;
 import org.firstinspires.ftc.teamcode.classes.Global;
 import org.firstinspires.ftc.teamcode.classes.RobotController;
 import org.firstinspires.ftc.teamcode.classes.RuntimeType;
+import org.firstinspires.ftc.teamcode.classes.Side;
 
 import java.util.List;
 
@@ -37,7 +38,7 @@ public class OnePlusParkingRight extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        Arena arena = new Arena(hardwareMap, RuntimeType.HARDCODED_AUTO, Global.rightPos);
+        Arena arena = new Arena(hardwareMap, RuntimeType.HARDCODED_AUTO, Side.RIGHT);
         RobotController robot = arena.getRobot();
 
         initVuforia();
@@ -76,15 +77,10 @@ public class OnePlusParkingRight extends LinearOpMode {
             robot.setClawHeight(4, true);
             robot.liftBrake();
             arena.moveToSquare(5, 1, true);
-            arena.setRotationDegrees(0, 0.6);
-            arena.moveToSquare(4.05, 1, true);
-            arena.setRotationDegrees(0, 0.6);
-            arena.moveToSquare(4.05, 3.521, true);
-            arena.setRotationDegrees(0, 0.6);
+            arena.moveToSquare(5, 3.521, true);
             robot.setClawHeight(Global.HIGH_JUNCTION_HEIGHT + 5, true);
             robot.liftBrake();
-            arena.move(3.5, -3.5, -3.5, 3.5);
-            arena.setRotationDegrees(0, 0.6);
+            arena.moveClawToPos(Global.leftJunction, true);
             robot.openClaw();
             sleep(1000);
 

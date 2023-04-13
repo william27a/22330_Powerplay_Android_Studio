@@ -13,6 +13,7 @@ import org.firstinspires.ftc.teamcode.classes.Arena;
 import org.firstinspires.ftc.teamcode.classes.Global;
 import org.firstinspires.ftc.teamcode.classes.RobotController;
 import org.firstinspires.ftc.teamcode.classes.RuntimeType;
+import org.firstinspires.ftc.teamcode.classes.Side;
 
 import java.util.List;
 
@@ -37,7 +38,7 @@ public class OnePlusParkingLeft extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        Arena arena = new Arena(hardwareMap, RuntimeType.HARDCODED_AUTO, Global.leftPos);
+        Arena arena = new Arena(hardwareMap, RuntimeType.HARDCODED_AUTO, Side.LEFT);
         RobotController robot = arena.getRobot();
 
         initVuforia();
@@ -75,8 +76,8 @@ public class OnePlusParkingLeft extends LinearOpMode {
             sleep(1000);
             robot.setClawHeight(4, true);
             robot.liftBrake();
-            arena.moveToSquare(5, 1, true);
-            arena.moveToSquare(5, 3.521, true);
+            arena.moveToSquare(2, 1, true);
+            arena.moveToSquare(2, 3.521, true);
             robot.setClawHeight(Global.HIGH_JUNCTION_HEIGHT + 5, true);
             robot.liftBrake();
             arena.moveClawToPos(Global.leftJunction, true);
@@ -85,12 +86,12 @@ public class OnePlusParkingLeft extends LinearOpMode {
 
             robot.setDriveSpeed(0.5);
 
-            arena.moveToSquare(5.15, 3, true);
+            arena.moveToSquare(2, 3, true);
 
             if (label.equals("1monkey")) {
-                arena.moveToSquare(4, 3, false);
+                arena.moveToSquare(1, 3, false);
             } else if (label.equals("3banana")) {
-                arena.moveToSquare(6, 3, false);
+                arena.moveToSquare(3, 3, false);
             }
             arena.setRotationDegrees(0, 0.6);
         }

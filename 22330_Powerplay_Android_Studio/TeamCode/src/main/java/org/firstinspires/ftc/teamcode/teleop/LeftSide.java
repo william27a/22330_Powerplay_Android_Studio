@@ -7,6 +7,7 @@ import org.firstinspires.ftc.teamcode.classes.Arena;
 import org.firstinspires.ftc.teamcode.classes.Global;
 import org.firstinspires.ftc.teamcode.classes.RobotController;
 import org.firstinspires.ftc.teamcode.classes.RuntimeType;
+import org.firstinspires.ftc.teamcode.classes.Side;
 
 @TeleOp(name = "Left Side", group = "Experimental")
 public class LeftSide extends LinearOpMode {
@@ -19,7 +20,7 @@ public class LeftSide extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        arena = new Arena(hardwareMap, RuntimeType.DRIVER_CONTROLLED_TELEOP, Global.leftPos);
+        arena = new Arena(hardwareMap, RuntimeType.DRIVER_CONTROLLED_TELEOP, Side.LEFT);
         robot = arena.getRobot();
 
         waitForStart();
