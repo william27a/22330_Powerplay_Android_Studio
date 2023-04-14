@@ -21,5 +21,10 @@ public class TestAuto extends LinearOpMode {
         ElapsedTime time = new ElapsedTime();
 
         waitForStart();
+        arena.robot.closeClaw();
+        robot.setClawHeight(Global.HIGH_JUNCTION_HEIGHT + 5, true);
+        robot.liftBrake();
+        //arena.robot.liftBrake();
+        sleep(10000);
     }
 }

@@ -4,8 +4,9 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 public class Global {
     // Positions
-    public final static double[] leftPos = new double[]{33.75, 7.5};
-    public final static double[] rightPos = new double[]{103, 7.5};
+    public final static double[] leftPos = new double[]{33.5, 8.25};
+    public final static double[] rightPos = new double[]{105, 8.25};
+    public final static double[] blSquare = new double[]{12.25, 12.25};
 
     public final static double[] leftStack = new double[]{58.875, 2};
     public final static double[] rightStack = new double[]{58.875, 139};
@@ -21,23 +22,6 @@ public class Global {
 
     public final static double DEGREE_TOLERANCE = 0.2;
     public final static double RADIAN_TOLERANCE = Math.toRadians(DEGREE_TOLERANCE);
-
-    // Shoulder systems
-    public final static double SHOULDER_CPD = 29.32222222218357;
-    public final static double SHOULDER_CPR = 1680.03957928;
-    public final static double SHOULDER_ABOVE_GROUND = 6.25;
-    public final static double SHOULDER_FORWARD_FROM_CENTER = (13.75 / 2) + 0.25;
-    public final static double SHOULDER_RIGHT_FROM_CENTER = 1.25;
-    public final static double SHOULDER_TOLERANCE = 4;
-
-    // Arm systems
-    public final static double ARM_CPI = 252.407302413;
-    public final static double ARM_BOTTOM = 0;
-    public final static double ARM_LENGTH = 32;
-
-    // Hand systems
-    public final static double HAND_AWAY_FROM_ARM = 13;
-    public final static double HAND_LENGTH = 4.5;
 
     // Lift systems
     public final static double LIFT_CPI = 100;

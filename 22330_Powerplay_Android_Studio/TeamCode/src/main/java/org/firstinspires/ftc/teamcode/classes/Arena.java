@@ -18,12 +18,11 @@ public class Arena extends LinearOpMode {
         if (side == Side.LEFT) {
             this.xPosition = Global.leftPos[0];
             this.yPosition = Global.leftPos[1];
-            this.calibrateYawDegrees = -this.robot.getRotationDegrees();
         } else {
             this.xPosition = Global.rightPos[0];
             this.yPosition = Global.rightPos[1];
-            this.calibrateYawDegrees = 180-this.robot.getRotationDegrees();
         }
+        this.calibrateYawDegrees = -this.robot.getRotationDegrees();
         this.calibrateYawRadians = Math.toRadians(calibrateYawDegrees);
     }
 
@@ -33,21 +32,23 @@ public class Arena extends LinearOpMode {
         if (side == Side.LEFT) {
             this.xPosition = Global.leftPos[0];
             this.yPosition = Global.leftPos[1];
-            this.calibrateYawDegrees = -this.robot.getRotationDegrees();
         } else {
             this.xPosition = Global.rightPos[0];
             this.yPosition = Global.rightPos[1];
-            this.calibrateYawDegrees = 180-this.robot.getRotationDegrees();
         }
+        this.calibrateYawDegrees = -this.robot.getRotationDegrees();
         this.calibrateYawRadians = Math.toRadians(calibrateYawDegrees);
     }
 
     // Static and non-static get position methods
     public static double[] getInches(double squareX, double squareY) {
-        double[] inches = new double[2];
-        inches[0] = (Global.TILE_LENGTH * (squareX - 0.5));
-        inches[1] = (Global.TILE_LENGTH * (squareY - 0.5));
-        return inches;
+        squareX-=1;
+        squareY-=1;
+        return new double[]{Global.TILE_LENGTH * squareX + Global.blSquare[0], Global.TILE_LENGTH * squareY + Global.blSquare[1]};
+    }
+
+    public double[] getInches() {
+        return new double[]{this.xPosition, this.yPosition};
     }
 
     public double[] getClawPos(double[] offset) {
@@ -113,8 +114,8 @@ public class Arena extends LinearOpMode {
         double moveUp = newInches[1] - yPosition;
         double moveRight = newInches[0] - xPosition;
 
-        double a = (Math.cos(this.getRotationRadians()) * moveUp) - (Math.sin(this.getRotationRadians()) * moveRight);
-        double b = (Math.sin(this.getRotationRadians()) * moveUp) + (Math.cos(this.getRotationRadians()) * moveRight);
+        double a = (Math.cos(this.getRotationRadians()) * moveUp) +/*-*/ (Math.sin(this.getRotationRadians()) * moveRight);
+        double b = -/*+*/(Math.sin(this.getRotationRadians()) * moveUp) + (Math.cos(this.getRotationRadians()) * moveRight);
 
         this.move(a + b, a - b, a - b, a + b);
 
@@ -148,8 +149,8 @@ public class Arena extends LinearOpMode {
         double moveUp = newInches[1] - yPosition;
         double moveRight = newInches[0] - xPosition;
 
-        double a = (Math.cos(this.getRotationRadians()) * moveUp) - (Math.sin(this.getRotationRadians()) * moveRight);
-        double b = (Math.sin(this.getRotationRadians()) * moveUp) + (Math.cos(this.getRotationRadians()) * moveRight);
+        double a = (Math.cos(this.getRotationRadians()) * moveUp) +/*-*/ (Math.sin(this.getRotationRadians()) * moveRight);
+        double b = -/*+*/(Math.sin(this.getRotationRadians()) * moveUp) + (Math.cos(this.getRotationRadians()) * moveRight);
 
         this.move(a + b, a - b, a - b, a + b);
 
