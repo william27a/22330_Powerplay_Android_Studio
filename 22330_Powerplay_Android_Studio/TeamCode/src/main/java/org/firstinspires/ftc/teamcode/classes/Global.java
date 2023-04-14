@@ -11,10 +11,10 @@ public class Global {
     public final static double[] leftStack = new double[]{58.875, 2};
     public final static double[] rightStack = new double[]{58.875, 139};
 
-    public final static double[] leftJunction = new double[]{47.25,70.5};
+    public final static double[] leftJunction = new double[]{47,70.625};
     public final static double[] rightJunction = new double[]{94.5,70.5};
 
-    public final static double[] clawOffset = new double[]{9, 1.5};
+    public final static double[] clawOffset = new double[]{10.5, 1.5};
 
     // Drive systems
     public final static double DRIVE_CPI = 44.4274370516;
@@ -24,7 +24,7 @@ public class Global {
     public final static double RADIAN_TOLERANCE = Math.toRadians(DEGREE_TOLERANCE);
 
     // Lift systems
-    public final static double LIFT_CPI = 100;
+    public final static double LIFT_CPI = 81;
     public final static double LIFT_BOTTOM = 0.0;
     public final static double LIFT_LENGTH = 38.5;
 

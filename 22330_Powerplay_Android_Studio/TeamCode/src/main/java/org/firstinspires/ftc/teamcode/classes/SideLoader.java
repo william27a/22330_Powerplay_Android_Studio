@@ -26,6 +26,7 @@ class SideLoader {
     }
 
     public void init() {
+        this.lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         this.lift.setDirection(DcMotor.Direction.REVERSE);
         this.claw.setDirection(Servo.Direction.FORWARD);
 

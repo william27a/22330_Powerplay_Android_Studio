@@ -22,9 +22,9 @@ public class TestAuto extends LinearOpMode {
 
         waitForStart();
         arena.robot.closeClaw();
-        robot.setClawHeight(Global.HIGH_JUNCTION_HEIGHT + 5, true);
+        sleep(1000);
+        robot.setLiftHeight( 30, true);
         robot.liftBrake();
-        //arena.robot.liftBrake();
-        sleep(10000);
+        sleep(20000);
     }
 }
