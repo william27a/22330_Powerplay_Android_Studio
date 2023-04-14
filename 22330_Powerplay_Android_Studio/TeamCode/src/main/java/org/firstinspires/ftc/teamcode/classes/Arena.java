@@ -57,6 +57,10 @@ public class Arena extends LinearOpMode {
         double newX = (Math.sin(this.getRotationRadians()) * y) + (Math.cos(this.getRotationRadians()) * x);
         double newY = (Math.cos(this.getRotationRadians()) * y) - (Math.sin(this.getRotationRadians()) * x);
 
+        // Do some testing for Mega Sussy errors
+        // double newX = (Math.cos(this.getRotationRadians()) * x) - (Math.sin(this.getRotationRadians()) * y);
+        // double newY = (Math.cos(this.getRotationRadians()) * y) + (Math.sin(this.getRotationRadians()) * x);
+
         offset[0] = newX;
         offset[1] = newY;
 

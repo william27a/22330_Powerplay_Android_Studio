@@ -25,7 +25,7 @@ public class AgentAutoRight extends LinearOpMode {
         agentHandler = new AgentHandler();
         agentHandler.initVuforia(hardwareMap);
         agentHandler.initEnvironment("sdcard/FIRST/tflitemodels/SimpleBehavior.onnx");
-        arena = new Arena(hardwareMap, RuntimeType.AGENT_CONTROLLED_AUTO, Side.RIGHT);
+        arena = new Arena(hardwareMap, RuntimeType.AGENT_CONTROLLED_AUTO, Side.LEFT);
         robot = arena.getRobot();
         time = new ElapsedTime();
 
@@ -41,10 +41,6 @@ public class AgentAutoRight extends LinearOpMode {
             // // alter arena.getRotationDegrees() to return value from 0 to 360
             robot.handleRL(outputs);
             //robot.handleRL(agentHandler.runAuto(/*agentHandler.getFrame(), */(float)arena.getRotationDegrees()/*, (float)time.seconds()*/));
-
-            // telemetry.addLine(interpreter.getSignatureKeys()[0]);
-            // telemetry.update();
-            // sleep(10000);
 
             // fl = forward - right + rotation
             // fr = forward + right - rotation
