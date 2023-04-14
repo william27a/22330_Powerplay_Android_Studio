@@ -19,11 +19,8 @@ import java.util.List;
 
 @Autonomous(name = "One Plus Parking Left", group = "Experimental")
 public class OnePlusParkingLeft extends LinearOpMode {
-
-    // update to new tfod model when available
     private static final String TFOD_MODEL_FILE = "model_20230112_080725.tflite";
 
-    // update labels when model is updated
     private static final String[] LABELS = {
             "1monkey",
             "2omega",
@@ -77,7 +74,7 @@ public class OnePlusParkingLeft extends LinearOpMode {
             robot.setClawHeight(4, true);
             robot.liftBrake();
             arena.moveToSquare(2, 1, true);
-            arena.moveToSquare(2, 3.521, true);
+            arena.moveToSquare(2, 3.5, true);
             robot.setClawHeight(Global.HIGH_JUNCTION_HEIGHT + 5, true);
             robot.liftBrake();
             arena.moveClawToPos(Global.leftJunction, true);

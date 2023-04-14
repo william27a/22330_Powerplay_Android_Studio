@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.classes;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.TouchSensor;
 
 public class Arena extends LinearOpMode {
     public RobotController robot;
@@ -55,8 +54,8 @@ public class Arena extends LinearOpMode {
         double x = offset[0];
         double y = offset[1];
 
-        double newX = Math.tan(this.getRotationRadians())*y;
-        double newY = x/Math.tan(this.getRotationRadians());
+        double newX = (Math.sin(this.getRotationRadians()) * y) + (Math.cos(this.getRotationRadians()) * x);
+        double newY = (Math.cos(this.getRotationRadians()) * y) - (Math.sin(this.getRotationRadians()) * x);
 
         offset[0] = newX;
         offset[1] = newY;
@@ -66,17 +65,15 @@ public class Arena extends LinearOpMode {
 
     public RobotController getRobot() { return this.robot; }
 
-    // Re-inits*
     private void update(double inchesFL, double inchesFR, double inchesBL, double inchesBR) {
         double forward = (inchesFL + inchesFR)/2;
         double right = (inchesFR - inchesBR)/2;
-        // double rotation = inchesFL - forward + right;
 
         this.xPosition += Math.sin(this.getRotationRadians()) * forward;
         this.yPosition += Math.cos(this.getRotationRadians()) * forward;
 
         this.xPosition += Math.cos(this.getRotationRadians()) * right;
-        this.yPosition += Math.sin(this.getRotationRadians()) * right;
+        this.yPosition -= Math.sin(this.getRotationRadians()) * right;
     }
 
     public void recalibrateYaw(double degrees) {

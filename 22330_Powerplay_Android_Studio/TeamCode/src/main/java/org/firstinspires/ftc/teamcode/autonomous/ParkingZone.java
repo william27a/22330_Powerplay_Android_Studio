@@ -18,11 +18,8 @@ import java.util.List;
 
 @Autonomous(name = "Parking Zone", group = "Experimental")
 public class ParkingZone extends LinearOpMode {
-
-    // update to new tfod model when available
     private static final String TFOD_MODEL_FILE = "model_20230112_080725.tflite";
 
-    // update labels when model is updated
     private static final String[] LABELS = {"1monkey", "2omega", "3banana"};
 
     private static final String VUFORIA_KEY = "ATZ/F4X/////AAABmSjnLIM91kSRo8TfH6CpvkpQb02HUOXzsAmc9sWr5aQKwBP0+GpVCddkSd7qVIgzYGRsutM1OEr4dRHyoy7G3gE8kovM+mnw5nVVkEJQEOhXlUt8ZN23VxVEMHO9qDIcH4vEv6w105kXo9FLJlikfRmKzVjMF/YAS4bU9UQVYpVzXCrEaoSE67McYRahSc3JfFmVkMqUCS2DDqyBC3MkN/YsO+EPmjz4iDIGz9HkSHkxylCOQ3rSHZQwZoGyrPJfkpl4XJoH+dKIawL3KeEWbMOIwDFR/IECVa8SNEeeaThDF3pvha2lTtdtgh5XLIcdSi27UQVTnaaM+5/G2gHLPMQ4n3DHIg4CQvmChLZTwD65";
@@ -63,13 +60,13 @@ public class ParkingZone extends LinearOpMode {
             telemetry.addData("recognition: ", label);
             telemetry.update();
 
-            arena.moveToSquare(2, 3, false);
+            arena.moveToSquare(2, 3, true);
 
             // if label is 2omega the robot is already in the right place
             if (label.equals("1monkey")) {
-                arena.moveToSquare(1, 3, false);
+                arena.moveToSquare(1, 3, true);
             } else if (label.equals("3banana")) {
-                arena.moveToSquare(3, 3, false);
+                arena.moveToSquare(3, 3, true);
             }
         }
     }

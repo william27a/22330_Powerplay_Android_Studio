@@ -21,23 +21,5 @@ public class TestAuto extends LinearOpMode {
         ElapsedTime time = new ElapsedTime();
 
         waitForStart();
-
-        double startIMU = robot.getRotationDegrees();
-
-        time.reset();
-        robot.chassis.frontLeft.setPower(1);
-        robot.chassis.frontRight.setPower(-1);
-        robot.chassis.backLeft.setPower(1);
-        robot.chassis.backRight.setPower(-1);
-        while (time.seconds() < 1) {}
-        robot.chassis.frontLeft.setPower(0);
-        robot.chassis.frontRight.setPower(0);
-        robot.chassis.backLeft.setPower(0);
-        robot.chassis.backRight.setPower(0);
-
-        telemetry.addData("RPS", Math.abs(startIMU - robot.getRotationDegrees()));
-        telemetry.update();
-
-        sleep(10000);
     }
 }

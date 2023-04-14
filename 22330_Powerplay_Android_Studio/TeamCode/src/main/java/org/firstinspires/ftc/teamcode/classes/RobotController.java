@@ -21,7 +21,7 @@ public class RobotController extends LinearOpMode {
     private double normal;
     private boolean liftWasStatic;
 
-    public RobotController(Chassis chassis, LongGrabber longGrabber, SideLoader sideLoader, RuntimeType type, Side side) {
+    public RobotController(Chassis chassis, SideLoader sideLoader, RuntimeType type, Side side) {
         this.chassis = chassis;
         this.sideLoader = sideLoader;
 
