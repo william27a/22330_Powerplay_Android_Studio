@@ -10,6 +10,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.teamcode.classes.Arena;
+import org.firstinspires.ftc.teamcode.classes.CalibrationType;
 import org.firstinspires.ftc.teamcode.classes.Global;
 import org.firstinspires.ftc.teamcode.classes.RuntimeType;
 import org.firstinspires.ftc.teamcode.classes.Side;
@@ -60,13 +61,13 @@ public class ParkingZone extends LinearOpMode {
             telemetry.addData("recognition: ", label);
             telemetry.update();
 
-            arena.moveToSquare(2, 3, true);
+            arena.moveToSquare(2, 3, 1, CalibrationType.ONCE, 0);
 
             // if label is 2omega the robot is already in the right place
             if (label.equals("1monkey")) {
-                arena.moveToSquare(1, 3, true);
+                arena.moveToSquare(1, 3, 1, CalibrationType.ONCE, 0);
             } else if (label.equals("3banana")) {
-                arena.moveToSquare(3, 3, true);
+                arena.moveToSquare(3, 3, 1, CalibrationType.ONCE, 0);
             }
         }
     }

@@ -10,6 +10,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.teamcode.classes.Arena;
+import org.firstinspires.ftc.teamcode.classes.CalibrationType;
 import org.firstinspires.ftc.teamcode.classes.Global;
 import org.firstinspires.ftc.teamcode.classes.RobotController;
 import org.firstinspires.ftc.teamcode.classes.RuntimeType;
@@ -73,19 +74,24 @@ public class OnePlusParkingLeft extends LinearOpMode {
             sleep(1000);
             robot.setLiftHeight(34, true);
             robot.liftBrake();
-            arena.moveClawToPos(new double[]{Global.leftJunction[0], arena.getClawPos(Global.clawOffset)[1]}, true);
-            arena.moveClawToPos(new double[]{arena.getClawPos(Global.clawOffset)[0], Global.leftJunction[1]}, true);
+            arena.moveClawToPos(new double[]{Global.leftJunction[0], arena.getClawPos(Global.clawOffset)[1]}, 1, CalibrationType.ONCE, 0);
+            arena.moveClawToPos(new double[]{arena.getClawPos(Global.clawOffset)[0], Global.leftJunction[1]}, 1, CalibrationType.ONCE, 0);
+            arena.moveToSquare(2, 1, 1, CalibrationType.ONCE, 0);
+            arena.moveToSquare(2, 3.5, 1, CalibrationType.ONCE, 0);
+            robot.setClawHeight(Global.HIGH_JUNCTION_HEIGHT + 5, true);
+            robot.liftBrake();
+            arena.moveClawToPos(Global.leftJunction, 1, CalibrationType.ONCE, 0);
             robot.openClaw();
             sleep(1000);
 
             robot.setDriveSpeed(0.5);
 
-            arena.moveToSquare(2, 3, true);
+            arena.moveToSquare(2, 3, 1, CalibrationType.ONCE, 0);
 
             if (label.equals("1monkey")) {
-                arena.moveToSquare(1, 3, false);
+                arena.moveToSquare(1, 3, 1, CalibrationType.ONCE, 0);
             } else if (label.equals("3banana")) {
-                arena.moveToSquare(3, 3, false);
+                arena.moveToSquare(3, 3, 1, CalibrationType.ONCE, 0);
             }
             arena.setRotationDegrees(0, 0.6);
         }

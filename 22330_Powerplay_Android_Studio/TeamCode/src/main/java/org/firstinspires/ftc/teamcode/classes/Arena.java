@@ -109,146 +109,99 @@ public class Arena extends LinearOpMode {
         this.robot.move(inchesFL, inchesFR, inchesBL, inchesBR);
     }
 
-    public void moveToSquare(double x, double y, boolean calibrate) {
+    public void moveToSquare(double x, double y, int checkpoints, CalibrationType calibrationType, double calibrateTo) {
         double[] newInches = Arena.getInches(x, y);
         double moveUp = newInches[1] - yPosition;
         double moveRight = newInches[0] - xPosition;
+        moveUp /= checkpoints;
+        moveRight /= checkpoints;
 
-        double a = (Math.cos(this.getRotationRadians()) * moveUp) +/*-*/ (Math.sin(this.getRotationRadians()) * moveRight);
-        double b = -/*+*/(Math.sin(this.getRotationRadians()) * moveUp) + (Math.cos(this.getRotationRadians()) * moveRight);
-
-        this.move(a + b, a - b, a - b, a + b);
-
-        if (calibrate) {
-            this.setRotationDegrees(0, 0.6);
-        }
-
-        /*} else {
-            double cleanRight = moveRight % Global.TILE_LENGTH;
-            moveRight -= cleanRight;
-
-            double a = Math.sin(this.getRotationRadians()) * cleanRight;
-            double b = Math.cos(this.getRotationRadians()) * cleanRight;
-
-            this.move(-a + b, -a - b, -a - b, -a + b);
-
-            a = Math.cos(this.getRotationRadians()) * moveUp;
-    https://www.tensorflow.org/lite/guide/inference        b = Math.sin(this.getRotationRadians()) * moveUp;
+        for (int i = 0; i < checkpoints; i++) {
+            double a = (Math.cos(this.getRotationRadians()) * moveUp) - (Math.sin(this.getRotationRadians()) * moveRight);
+            double b = (Math.sin(this.getRotationRadians()) * moveUp) + (Math.cos(this.getRotationRadians()) * moveRight);
 
             this.move(a + b, a - b, a - b, a + b);
 
-            a = Math.sin(this.getRotationRadians()) * moveRight;
-            b = Math.cos(this.getRotationRadians()) * moveRight;
+            if (calibrationType == CalibrationType.REPEAT) {
+                this.setRotationDegrees(calibrateTo, 0.6);
+            }
+        }
 
-            this.move(-a + b, -a - b, -a - b, -a + b);
-        }*/
+        if (calibrationType == CalibrationType.ONCE) {
+            this.setRotationDegrees(calibrateTo, 0.6);
+        }
     }
 
-    public void moveToPos(double[] pos, boolean calibrate) {
+    public void moveToPos(double[] pos, int checkpoints, CalibrationType calibrationType, double calibrateTo) {
         double[] newInches = pos;
         double moveUp = newInches[1] - yPosition;
         double moveRight = newInches[0] - xPosition;
+        moveUp /= checkpoints;
+        moveRight /= checkpoints;
 
-        double a = (Math.cos(this.getRotationRadians()) * moveUp) +/*-*/ (Math.sin(this.getRotationRadians()) * moveRight);
-        double b = -/*+*/(Math.sin(this.getRotationRadians()) * moveUp) + (Math.cos(this.getRotationRadians()) * moveRight);
+        for (int i = 0; i < checkpoints; i++) {
 
-        this.move(a + b, a - b, a - b, a + b);
-
-        if (calibrate) {
-            this.setRotationDegrees(0, 0.6);
-        }
-
-        /*} else {
-            double cleanRight = moveRight % Global.TILE_LENGTH;
-            moveRight -= cleanRight;
-
-            double a = Math.sin(this.getRotationRadians()) * cleanRight;
-            double b = Math.cos(this.getRotationRadians()) * cleanRight;
-
-            this.move(-a + b, -a - b, -a - b, -a + b);
-
-            a = Math.cos(this.getRotationRadians()) * moveUp;
-            https://www.tensorflow.org/lite/guide/inference        b = Math.sin(this.getRotationRadians()) * moveUp;
+            double a = (Math.cos(this.getRotationRadians()) * moveUp) - (Math.sin(this.getRotationRadians()) * moveRight);
+            double b = (Math.sin(this.getRotationRadians()) * moveUp) + (Math.cos(this.getRotationRadians()) * moveRight);
 
             this.move(a + b, a - b, a - b, a + b);
 
-            a = Math.sin(this.getRotationRadians()) * moveRight;
-            b = Math.cos(this.getRotationRadians()) * moveRight;
+            if (calibrationType == CalibrationType.REPEAT) {
+                this.setRotationDegrees(calibrateTo, 0.6);
+            }
+        }
 
-            this.move(-a + b, -a - b, -a - b, -a + b);
-        }*/
+        if (calibrationType == CalibrationType.ONCE) {
+            this.setRotationDegrees(calibrateTo, 0.6);
+        }
     }
 
-    public void moveClawToSquare(double x, double y, boolean calibrate) {
+    public void moveClawToSquare(double x, double y, int checkpoints, CalibrationType calibrationType, double calibrateTo) {
         double[] newInches = Arena.getInches(x, y);
         double[] realOffset = this.getClawPos(Global.clawOffset);
         double moveUp = newInches[1] - yPosition - realOffset[1];
         double moveRight = newInches[0] - xPosition - realOffset[0];
+        moveUp /= checkpoints;
+        moveRight /= checkpoints;
 
-        double a = (Math.cos(this.getRotationRadians()) * moveUp) - (Math.sin(this.getRotationRadians()) * moveRight);
-        double b = (Math.sin(this.getRotationRadians()) * moveUp) + (Math.cos(this.getRotationRadians()) * moveRight);
-
-        this.move(a + b, a - b, a - b, a + b);
-
-        if (calibrate) {
-            this.setRotationDegrees(0, 0.6);
-        }
-
-        /*} else {
-            double cleanRight = moveRight % Global.TILE_LENGTH;
-            moveRight -= cleanRight;
-
-            double a = Math.sin(this.getRotationRadians()) * cleanRight;
-            double b = Math.cos(this.getRotationRadians()) * cleanRight;
-
-            this.move(-a + b, -a - b, -a - b, -a + b);
-
-            a = Math.cos(this.getRotationRadians()) * moveUp;
-    https://www.tensorflow.org/lite/guide/inference        b = Math.sin(this.getRotationRadians()) * moveUp;
+        for (int i = 0; i < checkpoints; i++) {
+            double a = (Math.cos(this.getRotationRadians()) * moveUp) - (Math.sin(this.getRotationRadians()) * moveRight);
+            double b = (Math.sin(this.getRotationRadians()) * moveUp) + (Math.cos(this.getRotationRadians()) * moveRight);
 
             this.move(a + b, a - b, a - b, a + b);
 
-            a = Math.sin(this.getRotationRadians()) * moveRight;
-            b = Math.cos(this.getRotationRadians()) * moveRight;
+            if (calibrationType == CalibrationType.REPEAT) {
+                this.setRotationDegrees(calibrateTo, 0.6);
+            }
+        }
 
-            this.move(-a + b, -a - b, -a - b, -a + b);
-        }*/
+        if (calibrationType == CalibrationType.ONCE) {
+            this.setRotationDegrees(calibrateTo, 0.6);
+        }
     }
 
-    public void moveClawToPos(double[] pos, boolean calibrate) {
+    public void moveClawToPos(double[] pos, int checkpoints, CalibrationType calibrationType, double calibrateTo) {
         double[] newInches = pos;
         double[] realOffset = this.getClawPos(Global.clawOffset);
         double moveUp = newInches[1] - yPosition - realOffset[1];
         double moveRight = newInches[0] - xPosition - realOffset[0];
+        moveUp /= checkpoints;
+        moveRight /= checkpoints;
 
-        double a = (Math.cos(this.getRotationRadians()) * moveUp) - (Math.sin(this.getRotationRadians()) * moveRight);
-        double b = (Math.sin(this.getRotationRadians()) * moveUp) + (Math.cos(this.getRotationRadians()) * moveRight);
-
-        this.move(a + b, a - b, a - b, a + b);
-
-        if (calibrate) {
-            this.setRotationDegrees(0, 0.6);
-        }
-
-        /*} else {
-            double cleanRight = moveRight % Global.TILE_LENGTH;
-            moveRight -= cleanRight;
-
-            double a = Math.sin(this.getRotationRadians()) * cleanRight;
-            double b = Math.cos(this.getRotationRadians()) * cleanRight;
-
-            this.move(-a + b, -a - b, -a - b, -a + b);
-
-            a = Math.cos(this.getRotationRadians()) * moveUp;
-            https://www.tensorflow.org/lite/guide/inference        b = Math.sin(this.getRotationRadians()) * moveUp;
+        for (int i = 0; i < checkpoints; i++) {
+            double a = (Math.cos(this.getRotationRadians()) * moveUp) - (Math.sin(this.getRotationRadians()) * moveRight);
+            double b = (Math.sin(this.getRotationRadians()) * moveUp) + (Math.cos(this.getRotationRadians()) * moveRight);
 
             this.move(a + b, a - b, a - b, a + b);
 
-            a = Math.sin(this.getRotationRadians()) * moveRight;
-            b = Math.cos(this.getRotationRadians()) * moveRight;
+            if (calibrationType == CalibrationType.REPEAT) {
+                this.setRotationDegrees(calibrateTo, 0.6);
+            }
+        }
 
-            this.move(-a + b, -a - b, -a - b, -a + b);
-        }*/
+        if (calibrationType == CalibrationType.ONCE) {
+            this.setRotationDegrees(calibrateTo, 0.6);
+        }
     }
 
     @Override
