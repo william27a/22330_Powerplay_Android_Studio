@@ -74,8 +74,8 @@ public class OnePlusParkingLeft extends LinearOpMode {
             sleep(1000);
             robot.setLiftHeight(34, true);
             robot.liftBrake();
-            arena.moveClawToPos(new double[]{Global.leftJunction[0], arena.getClawPos(Global.clawOffset)[1]}, 1, CalibrationType.ONCE, 0);
-            arena.moveClawToPos(new double[]{arena.getClawPos(Global.clawOffset)[0], Global.leftJunction[1]}, 1, CalibrationType.ONCE, 0);
+            arena.moveClawToPos(new double[]{Global.leftJunction[0], arena.getClawPos(Global.clawOffset)[1]}, 1, CalibrationType.REPEAT, 0);
+            arena.moveClawToPos(new double[]{arena.getClawPos(Global.clawOffset)[0], Global.leftJunction[1]}, 1, CalibrationType.REPEAT, 0);
             arena.moveToSquare(2, 1, 1, CalibrationType.ONCE, 0);
             arena.moveToSquare(2, 3.5, 1, CalibrationType.ONCE, 0);
             robot.setClawHeight(Global.HIGH_JUNCTION_HEIGHT + 5, true);

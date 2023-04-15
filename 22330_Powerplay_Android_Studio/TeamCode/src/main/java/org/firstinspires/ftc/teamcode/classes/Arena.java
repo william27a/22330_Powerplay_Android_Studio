@@ -55,12 +55,14 @@ public class Arena extends LinearOpMode {
         double x = offset[0];
         double y = offset[1];
 
+        double newX = (Math.cos(this.getRotationRadians()) * x) - (Math.sin(this.getRotationRadians()) * y);
+        double newY = (Math.cos(this.getRotationRadians()) * y) + (Math.sin(this.getRotationRadians()) * x);
+
+        /*
+        older code
         double newX = (Math.sin(this.getRotationRadians()) * y) + (Math.cos(this.getRotationRadians()) * x);
         double newY = (Math.cos(this.getRotationRadians()) * y) - (Math.sin(this.getRotationRadians()) * x);
-
-        // Do some testing for Mega Sussy errors
-        // double newX = (Math.cos(this.getRotationRadians()) * x) - (Math.sin(this.getRotationRadians()) * y);
-        // double newY = (Math.cos(this.getRotationRadians()) * y) + (Math.sin(this.getRotationRadians()) * x);
+        */
 
         offset[0] = newX;
         offset[1] = newY;
@@ -74,11 +76,21 @@ public class Arena extends LinearOpMode {
         double forward = (inchesFL + inchesFR)/2;
         double right = (inchesFR - inchesBR)/2;
 
+        this.xPosition -= Math.sin(this.getRotationRadians()) * forward;
+        this.yPosition += Math.cos(this.getRotationRadians()) * forward;
+
+        this.xPosition += Math.cos(this.getRotationRadians()) * right;
+        this.yPosition -= Math.sin(this.getRotationRadians()) * right;
+
+        /*
+        older code
+
         this.xPosition += Math.sin(this.getRotationRadians()) * forward;
         this.yPosition += Math.cos(this.getRotationRadians()) * forward;
 
         this.xPosition += Math.cos(this.getRotationRadians()) * right;
         this.yPosition -= Math.sin(this.getRotationRadians()) * right;
+        */
     }
 
     public void recalibrateYaw(double degrees) {
@@ -117,8 +129,14 @@ public class Arena extends LinearOpMode {
         moveRight /= checkpoints;
 
         for (int i = 0; i < checkpoints; i++) {
+            double a = (Math.cos(this.getRotationRadians()) * moveUp) + (Math.sin(this.getRotationRadians()) * moveRight);
+            double b = (Math.cos(this.getRotationRadians()) * moveRight) - (Math.sin(this.getRotationRadians()) * moveUp);
+
+            /*
+            older code
             double a = (Math.cos(this.getRotationRadians()) * moveUp) - (Math.sin(this.getRotationRadians()) * moveRight);
             double b = (Math.sin(this.getRotationRadians()) * moveUp) + (Math.cos(this.getRotationRadians()) * moveRight);
+            */
 
             this.move(a + b, a - b, a - b, a + b);
 
@@ -140,9 +158,14 @@ public class Arena extends LinearOpMode {
         moveRight /= checkpoints;
 
         for (int i = 0; i < checkpoints; i++) {
+            double a = (Math.cos(this.getRotationRadians()) * moveUp) + (Math.sin(this.getRotationRadians()) * moveRight);
+            double b = (Math.cos(this.getRotationRadians()) * moveRight) - (Math.sin(this.getRotationRadians()) * moveUp);
 
+            /*
+            older code
             double a = (Math.cos(this.getRotationRadians()) * moveUp) - (Math.sin(this.getRotationRadians()) * moveRight);
             double b = (Math.sin(this.getRotationRadians()) * moveUp) + (Math.cos(this.getRotationRadians()) * moveRight);
+            */
 
             this.move(a + b, a - b, a - b, a + b);
 
@@ -165,8 +188,14 @@ public class Arena extends LinearOpMode {
         moveRight /= checkpoints;
 
         for (int i = 0; i < checkpoints; i++) {
+            double a = (Math.cos(this.getRotationRadians()) * moveUp) + (Math.sin(this.getRotationRadians()) * moveRight);
+            double b = (Math.cos(this.getRotationRadians()) * moveRight) - (Math.sin(this.getRotationRadians()) * moveUp);
+
+            /*
+            older code
             double a = (Math.cos(this.getRotationRadians()) * moveUp) - (Math.sin(this.getRotationRadians()) * moveRight);
             double b = (Math.sin(this.getRotationRadians()) * moveUp) + (Math.cos(this.getRotationRadians()) * moveRight);
+            */
 
             this.move(a + b, a - b, a - b, a + b);
 
@@ -189,8 +218,14 @@ public class Arena extends LinearOpMode {
         moveRight /= checkpoints;
 
         for (int i = 0; i < checkpoints; i++) {
+            double a = (Math.cos(this.getRotationRadians()) * moveUp) + (Math.sin(this.getRotationRadians()) * moveRight);
+            double b = (Math.cos(this.getRotationRadians()) * moveRight) - (Math.sin(this.getRotationRadians()) * moveUp);
+
+            /*
+            older code
             double a = (Math.cos(this.getRotationRadians()) * moveUp) - (Math.sin(this.getRotationRadians()) * moveRight);
             double b = (Math.sin(this.getRotationRadians()) * moveUp) + (Math.cos(this.getRotationRadians()) * moveRight);
+            */
 
             this.move(a + b, a - b, a - b, a + b);
 
