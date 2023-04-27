@@ -10,7 +10,7 @@ import java.util.HashMap;
 
 public class RobotController extends LinearOpMode {
     public Chassis chassis;
-    private SideLoader sideLoader;
+    public SideLoader sideLoader;
 
     private Side side;
 
