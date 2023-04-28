@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.classes.Arena;
+import org.firstinspires.ftc.teamcode.classes.CalibrationType;
 import org.firstinspires.ftc.teamcode.classes.Global;
 import org.firstinspires.ftc.teamcode.classes.RobotController;
 import org.firstinspires.ftc.teamcode.classes.RuntimeType;
@@ -21,10 +22,39 @@ public class TestAuto extends LinearOpMode {
         ElapsedTime time = new ElapsedTime();
 
         waitForStart();
-        arena.robot.closeClaw();
-        sleep(1000);
-        robot.setLiftHeight( 30, true);
-        robot.liftBrake();
-        sleep(20000);
+        time.reset();
+
+        robot.chassis.frontLeft.setPower(1);
+        robot.chassis.frontRight.setPower(1);
+        robot.chassis.backLeft.setPower(1);
+        robot.chassis.backRight.setPower(1);
+
+        sleep(3000);
+
+        robot.chassis.frontLeft.setPower(0);
+        robot.chassis.frontRight.setPower(0);
+        robot.chassis.backLeft.setPower(0);
+        robot.chassis.backRight.setPower(0);
+
+        sleep(3000);
+
+        robot.chassis.frontLeft.setPower(-1);
+        robot.chassis.frontRight.setPower(1);
+        robot.chassis.backLeft.setPower(1);
+        robot.chassis.backRight.setPower(-1);
+
+        sleep(3000);
+
+        robot.chassis.frontLeft.setPower(0);
+        robot.chassis.frontRight.setPower(0);
+        robot.chassis.backLeft.setPower(0);
+        robot.chassis.backRight.setPower(0);
+
+        /*
+        robot.closeClaw();
+        robot.setClawHeight(Global.HIGH_JUNCTION_HEIGHT, true);
+        arena.moveClawToPos(Global.leftPos, 1, CalibrationType.ONCE, 0);
+        robot.sideLoader.openClaw();
+        */
     }
 }

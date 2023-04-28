@@ -12,20 +12,6 @@ public class Arena extends LinearOpMode {
     private double calibrateYawDegrees;
     private double calibrateYawRadians;
 
-    public Arena(RobotController robot, Side side) {
-        this.robot = robot;
-
-        if (side == Side.LEFT) {
-            this.xPosition = Global.leftPos[0];
-            this.yPosition = Global.leftPos[1];
-        } else {
-            this.xPosition = Global.rightPos[0];
-            this.yPosition = Global.rightPos[1];
-        }
-        this.calibrateYawDegrees = -this.robot.getRotationDegrees();
-        this.calibrateYawRadians = Math.toRadians(calibrateYawDegrees);
-    }
-
     public Arena(HardwareMap map, RuntimeType type, Side side) {
         this.robot = new RobotController(map, type, side);
 
@@ -42,8 +28,8 @@ public class Arena extends LinearOpMode {
 
     // Static and non-static get position methods
     public static double[] getInches(double squareX, double squareY) {
-        squareX-=1;
-        squareY-=1;
+        squareX -= 1;
+        squareY -= 1;
         return new double[]{Global.TILE_LENGTH * squareX + Global.blSquare[0], Global.TILE_LENGTH * squareY + Global.blSquare[1]};
     }
 
@@ -58,12 +44,6 @@ public class Arena extends LinearOpMode {
         double newX = (Math.cos(this.getRotationRadians()) * x) - (Math.sin(this.getRotationRadians()) * y);
         double newY = (Math.cos(this.getRotationRadians()) * y) + (Math.sin(this.getRotationRadians()) * x);
 
-        /*
-        older code
-        double newX = (Math.sin(this.getRotationRadians()) * y) + (Math.cos(this.getRotationRadians()) * x);
-        double newY = (Math.cos(this.getRotationRadians()) * y) - (Math.sin(this.getRotationRadians()) * x);
-        */
-
         offset[0] = newX;
         offset[1] = newY;
 
@@ -72,30 +52,39 @@ public class Arena extends LinearOpMode {
 
     public RobotController getRobot() { return this.robot; }
 
-    private void update(double inchesFL, double inchesFR, double inchesBL, double inchesBR) {
-        double forward = (inchesFL + inchesFR)/2;
-        double right = (inchesFR - inchesBR)/2;
+    private double[] axisRotation(double x, double y, double angle) {
+        double newX = (Math.cos(angle) * x) - (Math.sin(angle) * y);
+        double newY = (Math.cos(angle) * y) + (Math.sin(angle) * x);
 
-        this.xPosition -= Math.sin(this.getRotationRadians()) * forward;
-        this.yPosition += Math.cos(this.getRotationRadians()) * forward;
-
-        this.xPosition += Math.cos(this.getRotationRadians()) * right;
-        this.yPosition -= Math.sin(this.getRotationRadians()) * right;
-
-        /*
-        older code
-
-        this.xPosition += Math.sin(this.getRotationRadians()) * forward;
-        this.yPosition += Math.cos(this.getRotationRadians()) * forward;
-
-        this.xPosition += Math.cos(this.getRotationRadians()) * right;
-        this.yPosition -= Math.sin(this.getRotationRadians()) * right;
-        */
+        return new double[]{newX, newY};
     }
 
-    public void recalibrateYaw(double degrees) {
-        this.calibrateYawDegrees = degrees - this.robot.getRotationDegrees();
-        this.calibrateYawRadians = Math.toRadians(degrees) - this.robot.getRotationRadians();
+    public double[] relationFromTicks(double[] ticks) {
+        return new double[]{(ticks[0] - ticks[1])/2, (ticks[0] + ticks[1])/2};
+    }
+
+    private double[] directionToRelation(double right, double up) {
+        double[] newVector = this.axisRotation(right, up, this.getRotationRadians());
+        double strafe = newVector[0];
+        double forward = newVector[1];
+        return new double[]{strafe, forward};
+    }
+
+    private double[] relationToDirection(double[] ticks) {
+        double[] relation = relationFromTicks(ticks);
+        double strafe = relation[0];
+        double forward = relation[1];
+
+        return this.axisRotation(strafe, forward, -this.getRotationRadians());
+    }
+
+    private void update(double ticksFL, double ticksFR, double ticksBL, double ticksBR) {
+        double[] direction = relationToDirection(new double[]{ticksFL, ticksFR, ticksBL, ticksBR});
+        double right = direction[0];
+        double up = direction[1];
+
+        this.xPosition += right;
+        this.yPosition += up;
     }
 
     // Drive systems
@@ -111,14 +100,16 @@ public class Arena extends LinearOpMode {
         return this.robot.getRotationRadians() + this.calibrateYawRadians;
     }
 
-    public void setRotationRadians(double radians, double speed) {
-        this.robot.setRotationRadians(radians - this.calibrateYawRadians, speed);
-    }
-
     public void move(double inchesFL, double inchesFR, double inchesBL, double inchesBR) {
         this.update(inchesFL, inchesFR, inchesBL, inchesBR);
 
         this.robot.move(inchesFL, inchesFR, inchesBL, inchesBR);
+    }
+
+    public void moveNicely(double inchesFL, double inchesFR, double inchesBL, double inchesBR, int checks) {
+        this.robot.moveNicely(inchesFL, inchesFR, inchesBL, inchesBR, checks);
+        double[] ticks = robot.chassis.getTicks();
+        this.update(ticks[0], ticks[1], ticks[2], ticks[3]);
     }
 
     public void moveToSquare(double x, double y, int checkpoints, CalibrationType calibrationType, double calibrateTo) {
@@ -129,16 +120,11 @@ public class Arena extends LinearOpMode {
         moveRight /= checkpoints;
 
         for (int i = 0; i < checkpoints; i++) {
-            double a = (Math.cos(this.getRotationRadians()) * moveUp) + (Math.sin(this.getRotationRadians()) * moveRight);
-            double b = (Math.cos(this.getRotationRadians()) * moveRight) - (Math.sin(this.getRotationRadians()) * moveUp);
+            double[] relation = directionToRelation(moveUp, moveRight);
+            double strafe = relation[0];
+            double forward = relation[1];
 
-            /*
-            older code
-            double a = (Math.cos(this.getRotationRadians()) * moveUp) - (Math.sin(this.getRotationRadians()) * moveRight);
-            double b = (Math.sin(this.getRotationRadians()) * moveUp) + (Math.cos(this.getRotationRadians()) * moveRight);
-            */
-
-            this.move(a + b, a - b, a - b, a + b);
+            this.move(forward - strafe, forward + strafe, forward + strafe, forward - strafe);
 
             if (calibrationType == CalibrationType.REPEAT) {
                 this.setRotationDegrees(calibrateTo, 0.6);
@@ -151,23 +137,17 @@ public class Arena extends LinearOpMode {
     }
 
     public void moveToPos(double[] pos, int checkpoints, CalibrationType calibrationType, double calibrateTo) {
-        double[] newInches = pos;
-        double moveUp = newInches[1] - yPosition;
-        double moveRight = newInches[0] - xPosition;
+        double moveUp = pos[1] - yPosition;
+        double moveRight = pos[0] - xPosition;
         moveUp /= checkpoints;
         moveRight /= checkpoints;
 
         for (int i = 0; i < checkpoints; i++) {
-            double a = (Math.cos(this.getRotationRadians()) * moveUp) + (Math.sin(this.getRotationRadians()) * moveRight);
-            double b = (Math.cos(this.getRotationRadians()) * moveRight) - (Math.sin(this.getRotationRadians()) * moveUp);
+            double[] relation = directionToRelation(moveUp, moveRight);
+            double strafe = relation[0];
+            double forward = relation[1];
 
-            /*
-            older code
-            double a = (Math.cos(this.getRotationRadians()) * moveUp) - (Math.sin(this.getRotationRadians()) * moveRight);
-            double b = (Math.sin(this.getRotationRadians()) * moveUp) + (Math.cos(this.getRotationRadians()) * moveRight);
-            */
-
-            this.move(a + b, a - b, a - b, a + b);
+            this.move(forward - strafe, forward + strafe, forward + strafe, forward - strafe);
 
             if (calibrationType == CalibrationType.REPEAT) {
                 this.setRotationDegrees(calibrateTo, 0.6);
@@ -188,16 +168,11 @@ public class Arena extends LinearOpMode {
         moveRight /= checkpoints;
 
         for (int i = 0; i < checkpoints; i++) {
-            double a = (Math.cos(this.getRotationRadians()) * moveUp) + (Math.sin(this.getRotationRadians()) * moveRight);
-            double b = (Math.cos(this.getRotationRadians()) * moveRight) - (Math.sin(this.getRotationRadians()) * moveUp);
+            double[] relation = directionToRelation(moveUp, moveRight);
+            double strafe = relation[0];
+            double forward = relation[1];
 
-            /*
-            older code
-            double a = (Math.cos(this.getRotationRadians()) * moveUp) - (Math.sin(this.getRotationRadians()) * moveRight);
-            double b = (Math.sin(this.getRotationRadians()) * moveUp) + (Math.cos(this.getRotationRadians()) * moveRight);
-            */
-
-            this.move(a + b, a - b, a - b, a + b);
+            this.move(forward - strafe, forward + strafe, forward + strafe, forward - strafe);
 
             if (calibrationType == CalibrationType.REPEAT) {
                 this.setRotationDegrees(calibrateTo, 0.6);
@@ -218,16 +193,11 @@ public class Arena extends LinearOpMode {
         moveRight /= checkpoints;
 
         for (int i = 0; i < checkpoints; i++) {
-            double a = (Math.cos(this.getRotationRadians()) * moveUp) + (Math.sin(this.getRotationRadians()) * moveRight);
-            double b = (Math.cos(this.getRotationRadians()) * moveRight) - (Math.sin(this.getRotationRadians()) * moveUp);
+            double[] relation = directionToRelation(moveUp, moveRight);
+            double strafe = relation[0];
+            double forward = relation[1];
 
-            /*
-            older code
-            double a = (Math.cos(this.getRotationRadians()) * moveUp) - (Math.sin(this.getRotationRadians()) * moveRight);
-            double b = (Math.sin(this.getRotationRadians()) * moveUp) + (Math.cos(this.getRotationRadians()) * moveRight);
-            */
-
-            this.move(a + b, a - b, a - b, a + b);
+            this.move(forward - strafe, forward + strafe, forward + strafe, forward - strafe);
 
             if (calibrationType == CalibrationType.REPEAT) {
                 this.setRotationDegrees(calibrateTo, 0.6);

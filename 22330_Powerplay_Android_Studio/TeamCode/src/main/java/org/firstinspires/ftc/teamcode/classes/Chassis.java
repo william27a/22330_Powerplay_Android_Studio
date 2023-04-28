@@ -165,4 +165,43 @@ public class Chassis {
         this.backLeft.setPower(0);
         this.backRight.setPower(0);
     }
+
+    public void moveNicely(double inchesFL, double inchesFR, double inchesBL, double inchesBR, int checks) {
+        this.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        this.frontLeft.setTargetPosition((int) (inchesFL * Global.DRIVE_CPI));
+        this.frontRight.setTargetPosition((int) (inchesFR * Global.DRIVE_CPI));
+        this.backLeft.setTargetPosition((int) (inchesBL * Global.DRIVE_CPI));
+        this.backRight.setTargetPosition((int) (inchesBR * Global.DRIVE_CPI));
+
+        this.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        this.frontLeft.setPower(this.driveSpeed);
+        this.frontRight.setPower(this.driveSpeed);
+        this.backLeft.setPower(this.driveSpeed);
+        this.backRight.setPower(this.driveSpeed);
+
+        boolean below = this.frontLeft.getCurrentPosition() < this.frontLeft.getTargetPosition();
+        while (this.frontLeft.isBusy() || this.frontRight.isBusy() || this.backLeft.isBusy() || this.backRight.isBusy()) {
+            if (this.frontLeft.getCurrentPosition() < this.frontLeft.getTargetPosition() != below) {
+                below = !below;
+                checks--;
+            }
+
+            if (checks <= 0) {
+                break;
+            }
+        }
+
+        this.frontLeft.setPower(0);
+        this.frontRight.setPower(0);
+        this.backLeft.setPower(0);
+        this.backRight.setPower(0);
+    }
+
+    public double[] getTicks() {
+        return new double[]{
+                this.frontLeft.getCurrentPosition(), this.frontRight.getCurrentPosition(), this.backLeft.getCurrentPosition(), this.backRight.getCurrentPosition()
+        };
+    }
 }

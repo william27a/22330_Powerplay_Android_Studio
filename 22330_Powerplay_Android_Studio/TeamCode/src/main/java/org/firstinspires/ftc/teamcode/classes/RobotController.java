@@ -63,6 +63,19 @@ public class RobotController extends LinearOpMode {
         this.chassis.move(inchesFL, inchesFR, inchesBL, inchesBR);
     }
 
+    public void moveNicely(double inchesFL, double inchesFR, double inchesBL, double inchesBR, int checks) {
+        double forward = (inchesFL + inchesFR) / 2;
+        double right = inchesFL - forward;
+        right *= Global.SIDE_TUNE;
+
+        inchesFL = forward + right;
+        inchesFR = forward - right;
+        inchesBL = forward - right;
+        inchesBR = forward + right;
+
+        this.chassis.moveNicely(inchesFL, inchesFR, inchesBL, inchesBR, checks);
+    }
+
     public double getRotationDegrees() { return this.chassis.getRotationDegrees(); }
 
     public void setRotationDegrees(double degrees, double speed) { this.chassis.setRotationDegrees(degrees, speed); }
