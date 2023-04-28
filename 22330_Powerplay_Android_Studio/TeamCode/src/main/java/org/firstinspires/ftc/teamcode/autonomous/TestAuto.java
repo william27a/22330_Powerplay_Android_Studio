@@ -24,37 +24,9 @@ public class TestAuto extends LinearOpMode {
         waitForStart();
         time.reset();
 
-        robot.chassis.frontLeft.setPower(1);
-        robot.chassis.frontRight.setPower(1);
-        robot.chassis.backLeft.setPower(1);
-        robot.chassis.backRight.setPower(1);
-
-        sleep(3000);
-
-        robot.chassis.frontLeft.setPower(0);
-        robot.chassis.frontRight.setPower(0);
-        robot.chassis.backLeft.setPower(0);
-        robot.chassis.backRight.setPower(0);
-
-        sleep(3000);
-
-        robot.chassis.frontLeft.setPower(-1);
-        robot.chassis.frontRight.setPower(1);
-        robot.chassis.backLeft.setPower(1);
-        robot.chassis.backRight.setPower(-1);
-
-        sleep(3000);
-
-        robot.chassis.frontLeft.setPower(0);
-        robot.chassis.frontRight.setPower(0);
-        robot.chassis.backLeft.setPower(0);
-        robot.chassis.backRight.setPower(0);
-
-        /*
         robot.closeClaw();
         robot.setClawHeight(Global.HIGH_JUNCTION_HEIGHT, true);
         arena.moveClawToPos(Global.leftPos, 1, CalibrationType.ONCE, 0);
         robot.sideLoader.openClaw();
-        */
     }
 }

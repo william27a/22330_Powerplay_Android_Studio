@@ -38,6 +38,9 @@ public class RobotController extends LinearOpMode {
                 || type == RuntimeType.AGENT_CONTROLLED_AUTO) {
             this.chassis.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
+        if (type != RuntimeType.DRIVER_CONTROLLED_TELEOP) {
+            this.chassis.reverso();
+        }
     }
 
     // Set variables

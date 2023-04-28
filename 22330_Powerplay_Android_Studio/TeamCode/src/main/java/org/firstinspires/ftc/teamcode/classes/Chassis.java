@@ -56,6 +56,13 @@ public class Chassis {
         this.imu.initialize(new IMU.Parameters(orientationOnRobot));
     }
 
+    public void reverso() {
+        this.frontLeft.setDirection(DcMotor.Direction.REVERSE);
+        this.frontRight.setDirection(DcMotor.Direction.FORWARD);
+        this.backLeft.setDirection(DcMotor.Direction.REVERSE);
+        this.backRight.setDirection(DcMotor.Direction.FORWARD);
+    }
+
     public double getDriveSpeed() {
         return this.driveSpeed;
     }
