@@ -108,7 +108,6 @@ int attr buttonStyle 0x7f03004a
 int attr buttonStyleSmall 0x7f03004b
 int attr buttonTint 0x7f03004c
 int attr buttonTintMode 0x7f03004d
-int attr camera_id 0x7f03004e
 int attr checkboxStyle 0x7f03004f
 int attr checkedTextViewStyle 0x7f030050
 int attr closeIcon 0x7f030051
@@ -258,7 +257,6 @@ int attr showAsAction 0x7f0300e0
 int attr showDividers 0x7f0300e1
 int attr showText 0x7f0300e2
 int attr showTitle 0x7f0300e3
-int attr show_fps 0x7f0300e4
 int attr singleChoiceItemLayout 0x7f0300e5
 int attr spinBars 0x7f0300e6
 int attr spinnerDropDownItemStyle 0x7f0300e7
@@ -851,12 +849,10 @@ int id always 0x7f08004a
 int id androidVersion 0x7f08004b
 int id androidVersionLayout 0x7f08004c
 int id androidVersion_img 0x7f08004d
-int id any 0x7f08004e
 int id appsInstalled 0x7f08004f
 int id async 0x7f080050
 int id attached_title 0x7f080051
 int id autoInspectQr 0x7f080052
-int id back 0x7f080053
 int id backButton 0x7f080054
 int id backbar 0x7f080055
 int id backgroundDarkGrayHolder 0x7f080056
@@ -938,7 +934,6 @@ int id fitCenter 0x7f0800a1
 int id fitXY 0x7f0800a2
 int id fixButton 0x7f0800a3
 int id forever 0x7f0800a4
-int id front 0x7f0800a5
 int id groupList 0x7f0800a6
 int id group_divider 0x7f0800a7
 int id header 0x7f0800a8
@@ -2636,9 +2631,6 @@ int styleable AppCompatTheme_windowMinWidthMinor 123
 int styleable AppCompatTheme_windowNoTitle 124
 int[] styleable ButtonBarLayout { 0x7f030026 }
 int styleable ButtonBarLayout_allowStacking 0
-int[] styleable CameraBridgeViewBase { 0x7f03004e, 0x7f0300e4 }
-int styleable CameraBridgeViewBase_camera_id 0
-int styleable CameraBridgeViewBase_show_fps 1
 int[] styleable ColorListPreference { 0x7f030065 }
 int styleable ColorListPreference_colors 0
 int[] styleable ColorStateListItem { 0x010101a5, 0x0101031f, 0x7f030027 }

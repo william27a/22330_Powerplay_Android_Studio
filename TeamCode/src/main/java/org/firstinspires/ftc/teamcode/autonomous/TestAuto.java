@@ -25,8 +25,13 @@ public class TestAuto extends LinearOpMode {
         time.reset();
 
         robot.closeClaw();
-        robot.setClawHeight(Global.HIGH_JUNCTION_HEIGHT, true);
-        arena.moveClawToPos(Global.leftPos, 1, CalibrationType.ONCE, 0);
-        robot.sideLoader.openClaw();
+        sleep(1000);
+        robot.setLiftHeight(34, true);
+        robot.liftBrake();
+        robot.setDriveSpeed(0.5);
+        robot.move(-40.5, -40.5, -40.5, -40.5);
+        sleep(100);
+        robot.move(6, -6, -6, 6);
+        robot.openClaw();
     }
 }

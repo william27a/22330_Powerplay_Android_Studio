@@ -45,10 +45,10 @@ public class Chassis {
     }
 
     public void init() {
-        this.frontLeft.setDirection(DcMotor.Direction.FORWARD);
-        this.frontRight.setDirection(DcMotor.Direction.REVERSE);
-        this.backLeft.setDirection(DcMotor.Direction.FORWARD);
-        this.backRight.setDirection(DcMotor.Direction.REVERSE);
+        this.frontLeft.setDirection(DcMotor.Direction.REVERSE);
+        this.frontRight.setDirection(DcMotor.Direction.FORWARD);
+        this.backLeft.setDirection(DcMotor.Direction.REVERSE);
+        this.backRight.setDirection(DcMotor.Direction.FORWARD);
 
         RevHubOrientationOnRobot.LogoFacingDirection logo = logoFacingDirections[0]; // Up
         RevHubOrientationOnRobot.UsbFacingDirection usb = usbFacingDirections[5]; // Right
@@ -57,10 +57,10 @@ public class Chassis {
     }
 
     public void reverso() {
-        this.frontLeft.setDirection(DcMotor.Direction.REVERSE);
-        this.frontRight.setDirection(DcMotor.Direction.FORWARD);
-        this.backLeft.setDirection(DcMotor.Direction.REVERSE);
-        this.backRight.setDirection(DcMotor.Direction.FORWARD);
+        this.frontLeft.setDirection(DcMotor.Direction.FORWARD);
+        this.frontRight.setDirection(DcMotor.Direction.REVERSE);
+        this.backLeft.setDirection(DcMotor.Direction.FORWARD);
+        this.backRight.setDirection(DcMotor.Direction.REVERSE);
     }
 
     public double getDriveSpeed() {

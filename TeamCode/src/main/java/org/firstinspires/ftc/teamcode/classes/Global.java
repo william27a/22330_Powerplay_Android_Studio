@@ -17,7 +17,7 @@ public class Global {
     public final static double[] clawOffset = new double[]{10.5, 1.5};
 
     // Drive systems
-    public final static double DRIVE_CPI = 44.4274370516;
+    public final static double DRIVE_CPI = 44.4274370516*40/40.25;
     public final static double SIDE_TUNE = 1.20954907162;
 
     public final static double DEGREE_TOLERANCE = 0.2;
