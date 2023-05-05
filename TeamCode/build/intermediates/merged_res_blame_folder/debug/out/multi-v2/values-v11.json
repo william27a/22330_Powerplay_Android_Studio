@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "org.firstinspires.ftc.teamcode.TeamCode-mergeDebugResources-17:/values-v11/values-v11.xml",
+            "outputFile": "org.firstinspires.ftc.teamcode.TeamCode-mergeDebugResources-18:/values-v11/values-v11.xml",
             "map": [
                 {
-                    "source": "/Users/william/.gradle/caches/transforms-3/3c78789e36818da5ea2d73e485f8e74e/transformed/jetified-RobotCore-8.1.1/res/values-v11/values-v11.xml",
+                    "source": "C:\\Users\\student\\.gradle\\caches\\transforms-3\\3c78789e36818da5ea2d73e485f8e74e\\transformed\\jetified-RobotCore-8.1.1\\res\\values-v11\\values-v11.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
