@@ -66,6 +66,19 @@ public class RobotController extends LinearOpMode {
         this.chassis.move(inchesFL, inchesFR, inchesBL, inchesBR);
     }
 
+    public void moveWithMap(double inchesFL, double inchesFR, double inchesBL, double inchesBR) {
+        double forward = (inchesFL + inchesFR) / 2;
+        double right = inchesFL - forward;
+        right *= Global.SIDE_TUNE;
+
+        inchesFL = forward + right;
+        inchesFR = forward - right;
+        inchesBL = forward - right;
+        inchesBR = forward + right;
+
+        this.chassis.moveWithMap(inchesFL, inchesFR, inchesBL, inchesBR);
+    }
+
     public void moveNicely(double inchesFL, double inchesFR, double inchesBL, double inchesBR, int checks) {
         double forward = (inchesFL + inchesFR) / 2;
         double right = inchesFL - forward;

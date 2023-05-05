@@ -45,6 +45,8 @@ public class Chassis {
     }
 
     public void init() {
+        this.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         this.frontLeft.setDirection(DcMotor.Direction.REVERSE);
         this.frontRight.setDirection(DcMotor.Direction.FORWARD);
         this.backLeft.setDirection(DcMotor.Direction.REVERSE);
@@ -89,6 +91,27 @@ public class Chassis {
     public void move(double inchesFL, double inchesFR, double inchesBL, double inchesBR) {
         this.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+        this.frontLeft.setTargetPosition((int) (inchesFL * Global.DRIVE_CPI));
+        this.frontRight.setTargetPosition((int) (inchesFR * Global.DRIVE_CPI));
+        this.backLeft.setTargetPosition((int) (inchesBL * Global.DRIVE_CPI));
+        this.backRight.setTargetPosition((int) (inchesBR * Global.DRIVE_CPI));
+
+        this.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        this.frontLeft.setPower(this.driveSpeed);
+        this.frontRight.setPower(this.driveSpeed);
+        this.backLeft.setPower(this.driveSpeed);
+        this.backRight.setPower(this.driveSpeed);
+
+        while (this.frontLeft.isBusy() || this.frontRight.isBusy() || this.backLeft.isBusy() || this.backRight.isBusy()) {}
+
+        this.frontLeft.setPower(0);
+        this.frontRight.setPower(0);
+        this.backLeft.setPower(0);
+        this.backRight.setPower(0);
+    }
+
+    public void moveWithMap(double inchesFL, double inchesFR, double inchesBL, double inchesBR) {
         this.frontLeft.setTargetPosition((int) (inchesFL * Global.DRIVE_CPI));
         this.frontRight.setTargetPosition((int) (inchesFR * Global.DRIVE_CPI));
         this.backLeft.setTargetPosition((int) (inchesBL * Global.DRIVE_CPI));
