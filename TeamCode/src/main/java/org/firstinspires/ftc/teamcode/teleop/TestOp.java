@@ -2,11 +2,9 @@ package org.firstinspires.ftc.teamcode.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.classes.RobotController;
 import org.firstinspires.ftc.teamcode.classes.RuntimeType;
-import org.firstinspires.ftc.teamcode.classes.Side;
 
 @TeleOp(name = "TestOp", group = "Experimental")
 public class TestOp extends LinearOpMode {
@@ -19,7 +17,7 @@ public class TestOp extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        robot = new RobotController(hardwareMap, RuntimeType.DRIVER_CONTROLLED_TELEOP, Side.LEFT);
+        robot = new RobotController(hardwareMap, RuntimeType.DRIVER_CONTROLLED_TELEOP);
 
         //shoulder = (DcMotor) hardwareMap.get("shoulder");
         //arm = (DcMotor) hardwareMap.get("arm");

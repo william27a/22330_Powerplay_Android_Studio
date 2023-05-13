@@ -6,13 +6,10 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.TouchSensor;
 
 import org.firstinspires.ftc.teamcode.classes.Arena;
-import org.firstinspires.ftc.teamcode.classes.Global;
 import org.firstinspires.ftc.teamcode.classes.RobotController;
 import org.firstinspires.ftc.teamcode.classes.RuntimeType;
-import org.firstinspires.ftc.teamcode.classes.Side;
 
 @TeleOp(name = "Decked Out", group = "Experimental")
 public class DeckedOut extends LinearOpMode {
@@ -74,11 +71,6 @@ public class DeckedOut extends LinearOpMode {
         lift = (DcMotor) hardwareMap.get("lift");
         claw = (Servo) hardwareMap.get("claw");
 
-        frontLeft.setDirection(DcMotor.Direction.FORWARD);
-        frontRight.setDirection(DcMotor.Direction.REVERSE);
-        backLeft.setDirection(DcMotor.Direction.FORWARD);
-        backRight.setDirection(DcMotor.Direction.REVERSE);
-
         lift.setDirection(DcMotor.Direction.REVERSE);
         claw.setDirection(Servo.Direction.FORWARD);
 
@@ -90,18 +82,23 @@ public class DeckedOut extends LinearOpMode {
         RevHubOrientationOnRobot orientationOnRobot = new RevHubOrientationOnRobot(logo, usb);
         imu.initialize(new IMU.Parameters(orientationOnRobot));
 
-        arena = new Arena(hardwareMap, RuntimeType.DRIVER_CONTROLLED_TELEOP, Side.LEFT);
+        arena = new Arena(hardwareMap, RuntimeType.DRIVER_CONTROLLED_TELEOP);
         robot = arena.getRobot();
 
         robot.setWheelMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        frontLeft.setDirection(DcMotor.Direction.REVERSE);
+        frontRight.setDirection(DcMotor.Direction.FORWARD);
+        backLeft.setDirection(DcMotor.Direction.REVERSE);
+        backRight.setDirection(DcMotor.Direction.FORWARD);
 
         waitForStart();
 
         while (opModeIsActive()) {
             // assign values to each variable included in chassis math
-            pivot = gamepad1.right_trigger - gamepad1.left_trigger;
-            x = gamepad1.left_stick_x;
-            y = -gamepad1.left_stick_y;
+            pivot = -gamepad1.right_trigger + gamepad1.left_trigger;
+            x = -gamepad1.left_stick_x;
+            y = gamepad1.left_stick_y;
 
             // set motor powers
             handleMovement(x, y, pivot);
@@ -133,6 +130,9 @@ public class DeckedOut extends LinearOpMode {
             }
             if (gamepad1.a) {
                 percent = 0.9;
+            }
+            if (gamepad1.b) {
+                arena.recalibrateYaw();
             }
         }
     }

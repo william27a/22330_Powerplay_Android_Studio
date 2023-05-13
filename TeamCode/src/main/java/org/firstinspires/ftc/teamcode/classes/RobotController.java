@@ -12,8 +12,6 @@ public class RobotController extends LinearOpMode {
     public Chassis chassis;
     public SideLoader sideLoader;
 
-    private Side side;
-
     // TeleOp
     private double x;
     private double y;
@@ -21,25 +19,21 @@ public class RobotController extends LinearOpMode {
     private double normal;
     private boolean liftWasStatic;
 
-    public RobotController(Chassis chassis, SideLoader sideLoader, RuntimeType type, Side side) {
+    public RobotController(Chassis chassis, SideLoader sideLoader, RuntimeType type) {
         this.chassis = chassis;
         this.sideLoader = sideLoader;
-
-        this.side = side;
     }
 
-    public RobotController(HardwareMap map, RuntimeType type, Side side) {
+    public RobotController(HardwareMap map, RuntimeType type) {
         this.chassis = new Chassis(map);
         this.sideLoader = new SideLoader(map);
-
-        this.side = side;
 
         if (type == RuntimeType.DRIVER_CONTROLLED_TELEOP || type == RuntimeType.AGENT_CONTROLLED_TELEOP
                 || type == RuntimeType.AGENT_CONTROLLED_AUTO) {
             this.chassis.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         }
-        if (type != RuntimeType.DRIVER_CONTROLLED_TELEOP) {
-            this.chassis.reverso();
+        if (type == RuntimeType.DRIVER_CONTROLLED_TELEOP) {
+            chassis.reverso();
         }
     }
 
@@ -151,26 +145,63 @@ public class RobotController extends LinearOpMode {
     public void runOpMode() {
     }
 
-    public void handleMovement(Gamepad gamepad1) {
+    public void handleMovementLeft(Gamepad gamepad1) {
         // assign values to each variable included in chassis math
         pivot = gamepad1.right_trigger - gamepad1.left_trigger;
 
         x = gamepad1.left_stick_x;
         y = -gamepad1.left_stick_y;
-        if (this.side == Side.RIGHT) {
-            x=-x;
-            y=-y;
-        }
         normal = Math.abs(pivot) + Math.abs(x) + Math.abs(y);
         if (normal < 1) {
             normal = 1;
         }
 
         // set motor powers
-        this.chassis.frontLeft.setPower((y + x + pivot) / normal);
-        this.chassis.frontRight.setPower((y - x - pivot) / normal);
-        this.chassis.backLeft.setPower((y - x + pivot) / normal);
-        this.chassis.backRight.setPower((y + x - pivot) / normal);
+        this.chassis.frontLeft.setPower((y + x + pivot) * this.chassis.getDriveSpeed() / normal);
+        this.chassis.frontRight.setPower((y - x - pivot) * this.chassis.getDriveSpeed() / normal);
+        this.chassis.backLeft.setPower((y - x + pivot) * this.chassis.getDriveSpeed() / normal);
+        this.chassis.backRight.setPower((y + x - pivot) * this.chassis.getDriveSpeed() / normal);
+
+        if (gamepad1.left_bumper) {
+            if (!gamepad1.right_bumper) {
+                this.sideLoader.claw.setPosition(0);
+            }
+        } else if (gamepad1.right_bumper) {
+            this.sideLoader.claw.setPosition(1);
+        }
+
+        if (-gamepad1.right_stick_y != 0) {
+            if (liftWasStatic) {
+                liftWasStatic = false;
+                this.sideLoader.lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            }
+            this.sideLoader.lift.setPower(-gamepad1.right_stick_y);
+        } else if (!liftWasStatic) {
+            this.sideLoader.lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            this.sideLoader.lift.setTargetPosition(0);
+            this.sideLoader.lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            this.sideLoader.lift.setPower(0.3);
+            liftWasStatic = true;
+        }
+    }
+
+    public void handleMovementRight(Gamepad gamepad1) {
+        // assign values to each variable included in chassis math
+        pivot = gamepad1.right_trigger - gamepad1.left_trigger;
+
+        x = -gamepad1.left_stick_x;
+        y = gamepad1.left_stick_y;
+
+        normal = Math.abs(pivot) + Math.abs(x) + Math.abs(y);
+        if (normal < 1) {
+            normal = 1;
+        }
+
+        // set motor powers
+        this.chassis.frontLeft.setPower((y + x + pivot) * this.chassis.getDriveSpeed() / normal);
+        this.chassis.frontRight.setPower((y - x - pivot) * this.chassis.getDriveSpeed() / normal);
+        this.chassis.backLeft.setPower((y - x + pivot) * this.chassis.getDriveSpeed() / normal);
+        this.chassis.backRight.setPower((y + x - pivot) * this.chassis.getDriveSpeed() / normal);
 
         if (gamepad1.left_bumper) {
             if (!gamepad1.right_bumper) {

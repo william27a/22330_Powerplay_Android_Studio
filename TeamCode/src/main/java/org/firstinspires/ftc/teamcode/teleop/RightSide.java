@@ -2,13 +2,11 @@ package org.firstinspires.ftc.teamcode.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.classes.Arena;
-import org.firstinspires.ftc.teamcode.classes.Global;
 import org.firstinspires.ftc.teamcode.classes.RobotController;
 import org.firstinspires.ftc.teamcode.classes.RuntimeType;
-import org.firstinspires.ftc.teamcode.classes.Side;
 
 @TeleOp(name = "Right Side", group = "Experimental")
 public class RightSide extends LinearOpMode {
@@ -21,27 +19,30 @@ public class RightSide extends LinearOpMode {
 
     @Override
     public void runOpMode() {
-        arena = new Arena(hardwareMap, RuntimeType.DRIVER_CONTROLLED_TELEOP, Side.RIGHT);
+        arena = new Arena(hardwareMap, RuntimeType.DRIVER_CONTROLLED_TELEOP);
         robot = arena.getRobot();
+
+        robot.setWheelMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.chassis.setDriveSpeed(0.7);
 
         waitForStart();
         while (opModeIsActive()) {
-            robot.handleMovement(gamepad1);
+            robot.handleMovementRight(gamepad1);
 
             if (gamepad1.y) {
-                if (!upGearPressed && !gamepad1.b) {
-                    upGearPressed = true;
+                if (!upGearPressed) {
                     robot.upGear();
                 }
+                upGearPressed = true;
             } else {
                 upGearPressed = false;
             }
 
-            if (gamepad1.b) {
-                if (!downGearPressed && !gamepad1.y) {
-                    downGearPressed = true;
+            if (gamepad1.a) {
+                if (!downGearPressed) {
                     robot.downGear();
                 }
+                downGearPressed = true;
             } else {
                 downGearPressed = false;
             }

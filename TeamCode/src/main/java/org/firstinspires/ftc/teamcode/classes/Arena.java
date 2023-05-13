@@ -12,16 +12,9 @@ public class Arena extends LinearOpMode {
     private double calibrateYawDegrees;
     private double calibrateYawRadians;
 
-    public Arena(HardwareMap map, RuntimeType type, Side side) {
-        this.robot = new RobotController(map, type, side);
+    public Arena(HardwareMap map, RuntimeType type) {
+        this.robot = new RobotController(map, type);
 
-        if (side == Side.LEFT) {
-            this.xPosition = Global.leftPos[0];
-            this.yPosition = Global.leftPos[1];
-        } else {
-            this.xPosition = Global.rightPos[0];
-            this.yPosition = Global.rightPos[1];
-        }
         this.calibrateYawDegrees = -this.robot.getRotationDegrees();
         this.calibrateYawRadians = Math.toRadians(calibrateYawDegrees);
     }
@@ -85,6 +78,11 @@ public class Arena extends LinearOpMode {
 
         this.xPosition += right;
         this.yPosition += up;
+    }
+
+    public void recalibrateYaw() {
+        this.calibrateYawDegrees = -this.robot.getRotationDegrees();
+        this.calibrateYawRadians = Math.toRadians(calibrateYawDegrees);
     }
 
     // Drive systems
