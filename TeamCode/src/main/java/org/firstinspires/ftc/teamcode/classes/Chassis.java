@@ -19,6 +19,11 @@ public class Chassis {
     public DcMotor backRight;
     private final IMU imu;
 
+    PIDController pidFL = new PIDController(2.5, 4, 4);
+    PIDController pidFR = new PIDController(2.5, 4, 4);
+    PIDController pidBL = new PIDController(2.5, 4, 4);
+    PIDController pidBR = new PIDController(2.5, 4, 4);
+
     private double driveSpeed = 0.6;
     private double rotationSpeed = 0.4;
 
@@ -104,6 +109,44 @@ public class Chassis {
         this.backRight.setPower(this.driveSpeed);
 
         while (this.frontLeft.isBusy() || this.frontRight.isBusy() || this.backLeft.isBusy() || this.backRight.isBusy()) {}
+
+        this.frontLeft.setPower(0);
+        this.frontRight.setPower(0);
+        this.backLeft.setPower(0);
+        this.backRight.setPower(0);
+    }
+
+    public void moveWPID(double inchesFL, double inchesFR, double inchesBL, double inchesBR) {
+        this.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        inchesFL *= Global.DRIVE_CPI;
+        inchesFR *= Global.DRIVE_CPI;
+        inchesBL *= Global.DRIVE_CPI;
+        inchesBR *= Global.DRIVE_CPI;
+
+        this.pidFL.setSetpoint(inchesFL);
+        this.pidFR.setSetpoint(inchesFR);
+        this.pidBL.setSetpoint(inchesBL);
+        this.pidBR.setSetpoint(inchesBR);
+
+        this.frontLeft.setTargetPosition((int) inchesFL);
+        this.frontRight.setTargetPosition((int) inchesFR);
+        this.backLeft.setTargetPosition((int) inchesBL);
+        this.backRight.setTargetPosition((int) inchesBR);
+
+        this.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        while (this.isBusy()) {
+            double powerFL = pidFL.getOutput(this.frontLeft.getCurrentPosition());
+            double powerFR = pidFR.getOutput(this.frontRight.getCurrentPosition());
+            double powerBL = pidBL.getOutput(this.backLeft.getCurrentPosition());
+            double powerBR = pidBR.getOutput(this.backRight.getCurrentPosition());
+
+            this.frontLeft.setPower(powerFL);
+            this.frontRight.setPower(powerFR);
+            this.backLeft.setPower(powerBL);
+            this.backRight.setPower(powerBR);
+        }
 
         this.frontLeft.setPower(0);
         this.frontRight.setPower(0);
@@ -233,5 +276,9 @@ public class Chassis {
         return new double[]{
                 this.frontLeft.getCurrentPosition(), this.frontRight.getCurrentPosition(), this.backLeft.getCurrentPosition(), this.backRight.getCurrentPosition()
         };
+    }
+
+    public boolean isBusy() {
+        return this.frontLeft.isBusy() || this.frontRight.isBusy() || this.backLeft.isBusy() || this.backRight.isBusy();
     }
 }

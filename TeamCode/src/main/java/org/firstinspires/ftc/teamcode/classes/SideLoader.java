@@ -29,8 +29,6 @@ public class SideLoader {
         this.lift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         this.lift.setDirection(DcMotor.Direction.REVERSE);
         this.claw.setDirection(Servo.Direction.FORWARD);
-
-        this.claw.scaleRange(0.15, 0.25);
     }
 
     public void setLiftDirection(DcMotorSimple.Direction direction) {
@@ -78,11 +76,11 @@ public class SideLoader {
 
     // Claw systems
     public void openClaw() {
-        claw.setPosition(0);
+        claw.setPosition(0.15);
     }
 
     public void closeClaw() {
-        claw.setPosition(1);
+        claw.setPosition(0.25);
     }
 
     // Overall systems

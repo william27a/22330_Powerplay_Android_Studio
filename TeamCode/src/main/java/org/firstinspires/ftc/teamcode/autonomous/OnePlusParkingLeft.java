@@ -59,19 +59,20 @@ public class OnePlusParkingLeft extends LinearOpMode {
             sleep(1000);
             robot.setLiftHeight(35, true);
             robot.liftBrake();
-            robot.move(61.5, 61.5, 61.5, 61.5);
+            robot.move(60.75, 60.75, 60.75, 60.75);
             arena.setRotationDegrees(0, 0.1);
             robot.move(3.25, -3.25, -3.25, 3.25);
             arena.setRotationDegrees(0, 0.1);
             robot.openClaw();
             sleep(1000);
             robot.move(-2.25, 2.25, 2.25, -2.25);
-            robot.move(-13.5, -13.5, -13.5, -13.5);
+            robot.move(-12.75, -12.75, -12.75, -12.75);
             arena.setRotationDegrees(0, 0.1);
 
             // if label is 2omega the robot is already in the right place
             if (detected.equals("1monkey")) {
                 robot.move(-25, 25, 25, -25);
+                robot.sideLoader.claw.setPosition(0);
             } else if (detected.equals("3banana")) {
                 robot.move(20, -20, -20, 20);
             } else {
