@@ -43,6 +43,8 @@ public class TestAuto extends LinearOpMode {
         RobotController robot = arena.getRobot();
 
         waitForStart();
-        arena.setRotationDegrees(0, 0.6);
+        telemetry.addData("Target Speed", robot.chassis.targetSpeed);
+        telemetry.update();
+        sleep(2000);
     }
 }

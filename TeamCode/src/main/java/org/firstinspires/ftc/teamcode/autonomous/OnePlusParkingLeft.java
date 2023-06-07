@@ -59,6 +59,10 @@ public class OnePlusParkingLeft extends LinearOpMode {
             sleep(1000);
             robot.setLiftHeight(35, true);
             robot.liftBrake();
+            //robot.move(30, 30, 30, 30);
+            //arena.setRotationDegrees(0, 0.1);
+            //robot.move(30.75, 30.75, 30.75, 30.75);
+            //arena.setRotationDegrees(0, 0.1);
             robot.move(60.75, 60.75, 60.75, 60.75);
             arena.setRotationDegrees(0, 0.1);
             robot.move(3.25, -3.25, -3.25, 3.25);

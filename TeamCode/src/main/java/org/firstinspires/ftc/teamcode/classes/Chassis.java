@@ -1,44 +1,49 @@
 package org.firstinspires.ftc.teamcode.classes;
 
+import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.VoltageUnit;
 
 public class Chassis {
     private static final RevHubOrientationOnRobot.LogoFacingDirection[] logoFacingDirections
             = RevHubOrientationOnRobot.LogoFacingDirection.values();
     private static final RevHubOrientationOnRobot.UsbFacingDirection[] usbFacingDirections
             = RevHubOrientationOnRobot.UsbFacingDirection.values();
-    public DcMotor frontLeft;
-    public DcMotor frontRight;
-    public DcMotor backLeft;
-    public DcMotor backRight;
+    public DcMotorEx frontLeft;
+    public DcMotorEx frontRight;
+    public DcMotorEx backLeft;
+    public DcMotorEx backRight;
     private final IMU imu;
 
-    PIDController pidFL = new PIDController(2.5, 4, 4);
-    PIDController pidFR = new PIDController(2.5, 4, 4);
-    PIDController pidBL = new PIDController(2.5, 4, 4);
-    PIDController pidBR = new PIDController(2.5, 4, 4);
+    PIDController pidFL = new PIDController(2.5, 4, 10);
+    PIDController pidFR = new PIDController(2.5, 4, 10);
+    PIDController pidBL = new PIDController(2.5, 4, 10);
+    PIDController pidBR = new PIDController(2.5, 4, 10);
 
     private double driveSpeed = 0.6;
     private double rotationSpeed = 0.4;
 
+    public double targetSpeed = 1;
+
     public Chassis(HardwareMap map) {
-        this.frontLeft = (DcMotor) map.get("frontLeft");
-        this.frontRight = (DcMotor) map.get("frontRight");
-        this.backLeft = (DcMotor) map.get("backLeft");
-        this.backRight = (DcMotor) map.get("backRight");
+        this.frontLeft = (DcMotorEx) map.get("frontLeft");
+        this.frontRight = (DcMotorEx) map.get("frontRight");
+        this.backLeft = (DcMotorEx) map.get("backLeft");
+        this.backRight = (DcMotorEx) map.get("backRight");
 
         this.imu = (IMU) map.get("imu");
 
         this.init();
     }
 
-    public Chassis(DcMotor frontLeft, DcMotor frontRight, DcMotor backLeft, DcMotor backRight, IMU imu) {
+    public Chassis(DcMotorEx frontLeft, DcMotorEx frontRight, DcMotorEx backLeft, DcMotorEx backRight, IMU imu) {
         this.frontLeft = frontLeft;
         this.frontRight = frontRight;
         this.backLeft = backLeft;
@@ -137,10 +142,10 @@ public class Chassis {
         this.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         while (this.isBusy()) {
-            double powerFL = pidFL.getOutput(this.frontLeft.getCurrentPosition());
-            double powerFR = pidFR.getOutput(this.frontRight.getCurrentPosition());
-            double powerBL = pidBL.getOutput(this.backLeft.getCurrentPosition());
-            double powerBR = pidBR.getOutput(this.backRight.getCurrentPosition());
+            double powerFL = pidFL.getOutput(this.frontLeft.getCurrentPosition() * targetSpeed);
+            double powerFR = pidFR.getOutput(this.frontRight.getCurrentPosition() * targetSpeed);
+            double powerBL = pidBL.getOutput(this.backLeft.getCurrentPosition() * targetSpeed);
+            double powerBR = pidBR.getOutput(this.backRight.getCurrentPosition() * targetSpeed);
 
             this.frontLeft.setPower(powerFL);
             this.frontRight.setPower(powerFR);
