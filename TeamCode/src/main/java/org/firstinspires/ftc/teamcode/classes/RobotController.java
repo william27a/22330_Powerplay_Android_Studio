@@ -57,7 +57,7 @@ public class RobotController extends LinearOpMode {
         inchesBL = forward - right;
         inchesBR = forward + right;
 
-        this.chassis.moveWPID(inchesFL, inchesFR, inchesBL, inchesBR);
+        this.chassis.move(inchesFL, inchesFR, inchesBL, inchesBR);
     }
 
     public void moveWithMap(double inchesFL, double inchesFR, double inchesBL, double inchesBR) {
